@@ -1,14 +1,40 @@
-Feature: My bootstrapped app kinda works
-  In order to get going on coding my awesome app
-  I want to have aruba and cucumber setup
-  So I don't have to do it myself
-
-  Scenario: App just runs
-    When I get help for "todo"
-    Then the exit status should be 0
-
+Feature: Todos App
   Scenario: I can create new tasks
-    When I run `todo new "hi"`
-    And I run todo list
-    Then the stdout should contain "hi"
-    
+    When I run `todo new hi`
+    And I run `todo new guy`
+    Then the file "tmp/fake_home/.todos.txt" should contain "hi\nguy"
+
+  Scenario: I can list my existing tasks
+    Given a file named "tmp/fake_home/.todos.txt" with:
+    """
+    Wash the dishes
+    Clean the garage
+
+    """
+    When I run `todo list`
+    Then stdout should contain exactly:
+    """
+    Wash the dishes
+    Clean the garage
+
+    """
+
+  Scenario: I can mark the top todo as done
+    Given a file named "tmp/fake_home/.todos.txt" with:
+    """
+    Wash the dishes
+    Clean the garage
+
+    """
+    When I run `todo done`
+    And I run `todo list`
+    Then stdout should contain:
+    """
+    Clean the garage
+
+    """
+    And stdout should not contain:
+    """
+    Wash the dishes
+    """
+

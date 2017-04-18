@@ -32,33 +32,40 @@ command :new do |c|
   c.desc 'Describe a switch to new'
   c.switch :s
 
-  c.desc 'Describe a flag to new'
-  c.default_value 'default'
-  c.flag :f
+  c.desc 'Path to todo file'
+  c.default_value File.join(ENV['HOME'], '.todos.txt')
+  c.flag [:f, :filename]
   c.action do |global_options,options,args|
-
-    # Your command logic here
-     
-    # If you have any errors, just raise them
-    # raise "that command made no sense"
-
-    puts "new command ran"
+    initial_buffer = File.exist?(options[:filename]) ? File.read(options[:filename]) : ''
+    todos = TodoList.new(StringIO.new(initial_buffer + args.join(' ')))
+    file = File.open(options[:filename], 'a')
+    todos.save(file)
   end
 end
 
 desc 'Describe list here'
 arg_name 'Describe arguments to list here'
 command :list do |c|
+  c.desc 'Path to todo file'
+  c.default_value File.join(ENV['HOME'], '.todos.txt')
+  c.flag [:f, :filename]
+
   c.action do |global_options,options,args|
-    puts "list command ran"
+    puts TodoList.new(StringIO.new(File.read(options[:filename])))
   end
 end
 
 desc 'Describe done here'
 arg_name 'Describe arguments to done here'
 command :done do |c|
+  c.desc 'Path to todo file'
+  c.default_value File.join(ENV['HOME'], '.todos.txt')
+  c.flag [:f, :filename]
+
   c.action do |global_options,options,args|
-    puts "done command ran"
+    todos = TodoList.new(StringIO.new(File.read(options[:filename])))
+    todos.done
+    todos.save(File.open(options[:filename], 'a'))
   end
 end
 

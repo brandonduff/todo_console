@@ -28,14 +28,44 @@ class TodoListTest < Minitest::Test
     @todo.add_todo('hi')
     @todo.add_todo('guy')
 
-    assert_equal(@todo.to_s, 'hi\nguy')
+    assert_equal(@todo.to_s, "hi\nguy")
   end
 
   def test_save_writes_todos_to_file
     buffer = StringIO.new
-    @todo.add_todo('hi')
+    @todo.add_todo("hi\n")
 
     @todo.save(buffer)
-    assert_equal(File.read("#{Dir.home}/.todos.txt"), @todo.to_s)
+    assert_equal(@todo.to_s, buffer.string)
+  end
+
+  def test_initialize_from_existing_buffer
+    initialBuffer = StringIO.new
+    initialBuffer << "hi\ntry\nguy\n"
+    resultBuffer = StringIO.new
+
+    @todo = TodoList.new(initialBuffer)
+    @todo.save(resultBuffer)
+    assert_equal(initialBuffer.string, resultBuffer.string)
+  end
+
+  def test_shift_on_empty_todos_does_nothing
+    @todo.done
+    assert_equal(@todo.to_s, '')
+  end
+
+  def test_shift_on_one_todo_list_makes_todos_empty
+    @todo.add_todo('hi')
+    @todo.done
+    assert_equal('', @todo.to_s)
+  end
+
+  def test_shift_with_two_todos_removes_the_first
+    @todo.add_todo('hi')
+    @todo.add_todo('guy')
+
+    @todo.done
+
+    assert_equal('guy', @todo.to_s)
   end
 end
