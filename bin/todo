@@ -36,11 +36,8 @@ command :new do |c|
   c.default_value File.join(ENV['HOME'], '.todos.txt')
   c.flag [:f, :filename]
   c.action do |global_options,options,args|
-    initial_buffer = File.exist?(options[:filename]) ? File.read(options[:filename]) : ''
-    todos = Todo::Task.new(StringIO.new(initial_buffer))
-    todos.add_todo(args.join(' '))
-    file = File.open(options[:filename], 'a')
-    todos.save(file)
+    @todos.add_todo(args.join(' '))
+    @todos.save(File.open(options[:filename], 'a'))
   end
 end
 
@@ -52,7 +49,7 @@ command :list do |c|
   c.flag [:f, :filename]
 
   c.action do |global_options,options,args|
-    puts Todo::Task.new(StringIO.new(File.read(options[:filename])))
+    puts @todos
   end
 end
 
@@ -64,9 +61,8 @@ command :done do |c|
   c.flag [:f, :filename]
 
   c.action do |global_options,options,args|
-    todos = Todo::Task.new(StringIO.new(File.read(options[:filename])))
-    todos.done
-    todos.save(File.open(options[:filename], 'a'))
+    @todos.done
+    @todos.save(File.open(options[:filename], 'a'))
   end
 end
 
@@ -76,6 +72,8 @@ pre do |global,command,options,args|
   # chosen command
   # Use skips_pre before a command to skip this block
   # on that command only
+  initial_buffer = File.exist?(options[:filename]) ? File.read(options[:filename]) : ''
+  @todos = Todo::Task.new(StringIO.new(initial_buffer))
   true
 end
 
