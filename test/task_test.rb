@@ -36,17 +36,19 @@ class TaskTest < Minitest::Test
     @task.add_todo("hi\n")
 
     @task.save(buffer)
+
     assert_equal(@task.to_s, buffer.string)
   end
 
   def test_initialize_from_existing_buffer
-    initialBuffer = StringIO.new
-    initialBuffer << "hi\ntry\nguy\n"
-    resultBuffer = StringIO.new
+    initial_buffer = StringIO.new
+    initial_buffer << "hi\ntry\nguy\n"
+    result_buffer = StringIO.new
 
-    @task = Todo::Task.new(initialBuffer)
-    @task.save(resultBuffer)
-    assert_equal(initialBuffer.string, resultBuffer.string)
+    @task = Todo::Task.new(initial_buffer)
+    @task.save(result_buffer)
+
+    assert_equal(initial_buffer.string, result_buffer.string)
   end
 
   def test_shift_on_empty_todos_does_nothing
