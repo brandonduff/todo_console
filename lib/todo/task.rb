@@ -1,7 +1,5 @@
 module Todo
   class Task
-    attr_reader :todos
-
     def initialize(buffer=StringIO.new)
       @todos = buffer.string.split("\n")
     end

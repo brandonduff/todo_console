@@ -1,7 +1,7 @@
 require_relative 'test_helper'
 require 'todo/task'
 
-class TaskListTest < Minitest::Test
+class TaskTest < Minitest::Test
 
   def setup
     @task = Todo::Task.new
@@ -11,7 +11,7 @@ class TaskListTest < Minitest::Test
     @task.add_todo('hi')
     @task.add_todo('guy')
 
-    assert_equal(@task.todos, ['hi', 'guy'])
+    assert_equal(@task.to_s, ['hi', 'guy'].join("\n"))
   end
 
   def test_to_s_with_no_todos
