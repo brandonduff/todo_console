@@ -37,7 +37,7 @@ command :new do |c|
   c.flag [:f, :filename]
   c.action do |global_options,options,args|
     initial_buffer = File.exist?(options[:filename]) ? File.read(options[:filename]) : ''
-    todos = TodoList.new(StringIO.new(initial_buffer))
+    todos = Todo::Task.new(StringIO.new(initial_buffer))
     todos.add_todo(args.join(' '))
     file = File.open(options[:filename], 'a')
     todos.save(file)
@@ -52,7 +52,7 @@ command :list do |c|
   c.flag [:f, :filename]
 
   c.action do |global_options,options,args|
-    puts TodoList.new(StringIO.new(File.read(options[:filename])))
+    puts Todo::Task.new(StringIO.new(File.read(options[:filename])))
   end
 end
 
@@ -64,7 +64,7 @@ command :done do |c|
   c.flag [:f, :filename]
 
   c.action do |global_options,options,args|
-    todos = TodoList.new(StringIO.new(File.read(options[:filename])))
+    todos = Todo::Task.new(StringIO.new(File.read(options[:filename])))
     todos.done
     todos.save(File.open(options[:filename], 'a'))
   end
