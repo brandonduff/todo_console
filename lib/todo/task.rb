@@ -1,19 +1,22 @@
+require 'todo/task_item'
+
 module Todo
   class Task
     def initialize(buffer=StringIO.new)
-      @todos = buffer.string.split("\n")
+      @todos = buffer.string.split("\n").map { |description| TaskItem.new(description) }
     end
 
     def add_todo(text)
-      @todos << text
+      @todos << TaskItem.new(text)
     end
 
     def done
-      @todos.shift
+      first_unfinished_todo = @todos.find(&:in_progress?)
+      first_unfinished_todo.done if first_unfinished_todo
     end
 
     def to_s
-      @todos.join("\n")
+      @todos.map(&:description).join("\n")
     end
 
     def save(buffer)

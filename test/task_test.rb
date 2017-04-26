@@ -51,23 +51,22 @@ class TaskTest < Minitest::Test
     assert_equal(initial_buffer.string, result_buffer.string)
   end
 
-  def test_shift_on_empty_todos_does_nothing
+  def test_done_on_empty_todos_does_nothing
     @task.done
     assert_equal(@task.to_s, '')
   end
 
-  def test_shift_on_one_todo_list_makes_todos_empty
+  def test_done_on_one_task_marks_todo_as_done
     @task.add_todo('hi')
     @task.done
-    assert_equal('', @task.to_s)
+    assert_equal('✓ hi', @task.to_s)
   end
 
-  def test_shift_with_two_todos_removes_the_first
-    @task.add_todo('hi')
-    @task.add_todo('guy')
-
+  def test_done_on_task_with_done_todos_marks_first_unfinished_todo_as_done
+    @task.add_todo('i am already done')
     @task.done
-
-    assert_equal('guy', @task.to_s)
+    @task.add_todo('i am now done')
+    @task.done
+    assert_equal("✓ i am already done\n✓ i am now done", @task.to_s)
   end
 end

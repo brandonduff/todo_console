@@ -30,11 +30,23 @@ Feature: Todos App
     And I run `todo list`
     Then stdout should contain:
     """
+    ✓ Wash the dishes
     Clean the garage
 
     """
-    And stdout should not contain:
-    """
-    Wash the dishes
-    """
 
+  Scenario: I can mark the second todo as done
+    Given a file named "tmp/fake_home/.todos.txt" with:
+    """
+    ✓ Wash the dishes
+    Clean the garage
+
+    """
+    When I run `todo done`
+    And I run `todo list`
+    Then stdout should contain:
+    """
+    ✓ Wash the dishes
+    ✓ Clean the garage
+
+    """

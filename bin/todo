@@ -74,7 +74,6 @@ pre do |global,command,options,args|
   # on that command only
   initial_buffer = File.exist?(options[:filename]) ? File.read(options[:filename]) : ''
   @todos = Todo::Task.new(StringIO.new(initial_buffer))
-  true
 end
 
 post do |global,command,options,args|
