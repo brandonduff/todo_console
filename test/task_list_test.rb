@@ -69,4 +69,30 @@ class TaskListTest < Minitest::Test
     @task_list.done
     assert_equal("✓ i am already done\n✓ i am now done", @task_list.to_s)
   end
+
+  def test_clear_on_empty_list_does_nothing
+    @task_list.clear
+    assert_equal(@task_list.to_s, '')
+  end
+
+  def test_clear_with_no_done_tasks_does_nothing
+    @task_list.add_task('hi')
+    @task_list.clear
+    assert_equal('hi', @task_list.to_s)
+  end
+
+  def test_clear_with_one_done_task_removes_it
+    @task_list.add_task('✓ hi')
+    @task_list.add_task('not done')
+    @task_list.clear
+    assert_equal('not done', @task_list.to_s)
+  end
+
+  def test_clear_with_multiple_done_tasks_removes_them
+    @task_list.add_task('✓ hi')
+    @task_list.add_task('✓ done')
+    @task_list.add_task('not done')
+    @task_list.clear
+    assert_equal('not done', @task_list.to_s)
+  end
 end

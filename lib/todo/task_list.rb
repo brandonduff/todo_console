@@ -15,6 +15,10 @@ module Todo
       first_unfinished_todo.done if first_unfinished_todo
     end
 
+    def clear
+      @tasks = @tasks.reject(&:done?)
+    end
+
     def to_s
       @tasks.map(&:description).join("\n")
     end

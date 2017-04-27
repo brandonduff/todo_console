@@ -50,3 +50,16 @@ Feature: Todos App
     ✓ Clean the garage
 
     """
+
+  Scenario: I can clear done todos
+    Given a file named "tmp/fake_home/.todos.txt" with:
+    """
+    \n✓ Wash the dishes
+    Clean the garage
+    """
+    When I run `todo clear`
+    And I run `todo list`
+    Then stdout should contain exactly:
+    """
+    \nClean the garage
+    """
