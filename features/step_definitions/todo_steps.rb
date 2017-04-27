@@ -7,10 +7,6 @@ When(/^I run todo new "([^"]*)"$/) do |arg|
   step %(I run `todo new #{arg}`)
 end
 
-When(/^I run todo list$/) do
-  step %(I run `todo list`)
-end
-
 Then(/^I should have the todo "([^"]*)" in my home$/) do |todo|
   contents = File.read("#{Dir.home}/.todos.txt")
   expect(contents).to eq(todo)
