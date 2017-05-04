@@ -63,3 +63,6 @@ Feature: Todos App
     """
     \nClean the garage
     """
+
+  #TODO: Change it so we only lists unfinished todos by default.
+  #      Listing all will require the -a flag
