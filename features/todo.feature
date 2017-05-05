@@ -19,6 +19,18 @@ Feature: Todos App
 
     """
 
+  Scenario: I only see unfinished todos by default
+    Given a file named "tmp/fake_home/.todos.txt" with:
+    """
+    \n✓ Wash the dishes
+    Clean the garage
+    """
+    When I run `todo list`
+    Then stdout should contain exactly:
+    """
+    Clean the garage
+    """
+
   Scenario: I can mark the top todo as done
     Given a file named "tmp/fake_home/.todos.txt" with:
     """
@@ -27,7 +39,7 @@ Feature: Todos App
 
     """
     When I run `todo done`
-    And I run `todo list`
+    And I run `todo list -a`
     Then stdout should contain:
     """
     ✓ Wash the dishes
@@ -43,7 +55,7 @@ Feature: Todos App
 
     """
     When I run `todo done`
-    And I run `todo list`
+    And I run `todo list -a`
     Then stdout should contain:
     """
     ✓ Wash the dishes
@@ -58,11 +70,8 @@ Feature: Todos App
     Clean the garage
     """
     When I run `todo clear`
-    And I run `todo list`
+    And I run `todo list -a`
     Then stdout should contain exactly:
     """
     \nClean the garage
     """
-
-  #TODO: Change it so we only lists unfinished todos by default.
-  #      Listing all will require the -a flag

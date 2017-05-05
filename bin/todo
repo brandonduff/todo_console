@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 require 'gli'
 begin # XXX: Remove this begin/rescue before distributing your app
-require 'todo'
+  require 'todo'
 rescue LoadError
   STDERR.puts "In development, you need to use `bundle exec bin/todo` to run your app"
   STDERR.puts "At install-time, RubyGems will make sure lib, etc. are in the load path"
@@ -19,12 +19,12 @@ subcommand_option_handling :normal
 arguments :strict
 
 desc 'Describe some switch here'
-switch [:s,:switch]
+switch [:s, :switch]
 
 desc 'Describe some flag here'
 default_value 'the default'
 arg_name 'The name of the argument'
-flag [:f,:flagname]
+flag [:f, :flagname]
 
 desc 'Describe new here'
 arg_name 'Describe arguments to new here'
@@ -35,21 +35,28 @@ command :new do |c|
   c.desc 'Path to todo file'
   c.default_value File.join(ENV['HOME'], '.todos.txt')
   c.flag [:f, :filename]
-  c.action do |global_options,options,args|
+  c.action do |global_options, options, args|
     @tasks.add_task(args.join(' '))
     @tasks.save(File.open(options[:filename], 'a'))
   end
 end
 
-desc 'Describe list here'
-arg_name 'Describe arguments to list here'
+desc 'Lists todos'
 command :list do |c|
   c.desc 'Path to todo file'
   c.default_value File.join(ENV['HOME'], '.todos.txt')
   c.flag [:f, :filename]
 
-  c.action do |global_options,options,args|
-    puts @tasks
+  c.desc 'List all todos (including done)'
+  c.switch [:a, :all]
+
+
+  c.action do |global_options, options, args|
+    if options[:all]
+      puts @tasks
+    else
+      puts @tasks.unfinished_tasks
+    end
   end
 end
 
@@ -60,7 +67,7 @@ command :done do |c|
   c.default_value File.join(ENV['HOME'], '.todos.txt')
   c.flag [:f, :filename]
 
-  c.action do |global_options,options,args|
+  c.action do |global_options, options, args|
     @tasks.done
     @tasks.save(File.open(options[:filename], 'a'))
   end
@@ -73,13 +80,13 @@ command :clear do |c|
   c.default_value File.join(ENV['HOME'], '.todos.txt')
   c.flag [:f, :filename]
 
-  c.action do |global_options,options,args|
+  c.action do |global_options, options, args|
     @tasks.clear
     @tasks.save(File.open(options[:filename], 'a'))
   end
 end
 
-pre do |global,command,options,args|
+pre do |global, command, options, args|
   # Pre logic here
   # Return true to proceed; false to abort and not call the
   # chosen command
@@ -89,7 +96,7 @@ pre do |global,command,options,args|
   @tasks = Todo::TaskList.new(StringIO.new(initial_buffer))
 end
 
-post do |global,command,options,args|
+post do |global, command, options, args|
   # Post logic here
   # Use skips_post before a command to skip this
   # block on that command only

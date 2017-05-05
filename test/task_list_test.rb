@@ -95,4 +95,11 @@ class TaskListTest < Minitest::Test
     @task_list.clear
     assert_equal('not done', @task_list.to_s)
   end
+
+  def test_in_progress_tasks_returns_unfinished_tasks
+    @task_list.add_task('done')
+    @task_list.done
+    @task_list.add_task('not done')
+    assert_equal('not done', @task_list.unfinished_tasks.to_s)
+  end
 end

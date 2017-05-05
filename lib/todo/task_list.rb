@@ -23,6 +23,12 @@ module Todo
       @tasks.map(&:description).join("\n")
     end
 
+    def unfinished_tasks
+      TaskList.new.tap do |list|
+        @tasks.select(&:in_progress?).each { |done_task| list.add_task(done_task.description) }
+      end
+    end
+
     def save(buffer)
       buffer.truncate(0)
       buffer.puts(self)
