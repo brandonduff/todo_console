@@ -26,9 +26,9 @@ default_value 'the default'
 arg_name 'The name of the argument'
 flag [:f, :flagname]
 
-desc 'Describe new here'
-arg_name 'Describe arguments to new here'
-command :new do |c|
+desc 'Create a new todo'
+arg_name 'Todo text'
+command :new, :n do |c|
   c.desc 'Describe a switch to new'
   c.switch :s
 
@@ -36,13 +36,13 @@ command :new do |c|
   c.default_value File.join(ENV['HOME'], '.todos.txt')
   c.flag [:f, :filename]
   c.action do |global_options, options, args|
-    @tasks.add_task(args.join(' '))
+    @tasks.add_task(Todo::TaskBuilder.new(args.join(' ')).build)
     @tasks.save(File.open(options[:filename], 'a'))
   end
 end
 
 desc 'Lists todos'
-command :list do |c|
+command :list, :ls do |c|
   c.desc 'Path to todo file'
   c.default_value File.join(ENV['HOME'], '.todos.txt')
   c.flag [:f, :filename]
@@ -62,13 +62,14 @@ end
 
 desc 'Marks the next unfinished todo as done'
 arg_name 'Takes a filename'
-command :done do |c|
+command :done, :d do |c|
   c.desc 'Path to todo file'
   c.default_value File.join(ENV['HOME'], '.todos.txt')
   c.flag [:f, :filename]
 
   c.action do |global_options, options, args|
-    @tasks.done
+    puts @tasks.done
+    puts @tasks.unfinished_tasks
     @tasks.save(File.open(options[:filename], 'a'))
   end
 end
@@ -83,6 +84,18 @@ command :clear do |c|
   c.action do |global_options, options, args|
     @tasks.clear
     @tasks.save(File.open(options[:filename], 'a'))
+  end
+end
+
+desc 'Unmarks the last done todo as done'
+command :undo do |c|
+  c.desc 'Path to todo file'
+  c.default_value File.join(ENV['HOME'], '.todos.txt')
+  c.flag [:f, :filename]
+
+  c.action do |_global_options, options, _args|
+    @tasks.undo
+    puts @tasks.unfinished_tasks
   end
 end
 

@@ -22,7 +22,7 @@ Feature: Todos App
   Scenario: I only see unfinished todos by default
     Given a file named "tmp/fake_home/.todos.txt" with:
     """
-    \n✓ Wash the dishes
+    ✓ Wash the dishes
     Clean the garage
     """
     When I run `todo list`
@@ -39,7 +39,6 @@ Feature: Todos App
 
     """
     When I run `todo done`
-    And I run `todo list -a`
     Then stdout should contain:
     """
     ✓ Wash the dishes
@@ -74,4 +73,17 @@ Feature: Todos App
     Then stdout should contain exactly:
     """
     \nClean the garage
+    """
+
+  Scenario: I can undo the last done todo
+    Given a file named "tmp/fake_home/.todos.txt" with:
+    """
+    ✓ Wash the dishes
+    Clean the garage
+    """
+    When I run `todo undo`
+    Then stdout should contain exactly:
+    """
+    Wash the dishes
+    Clean the garage
     """
