@@ -1,13 +1,16 @@
 module Todo
   class Persistence
-    def save(obj)
-      @obj = obj
-      self
+    def self.for(obj)
+      new(obj)
     end
 
-    def to(buffer)
+    def initialize(writable)
+      @writable = writable
+    end
+
+    def write_to(buffer)
       buffer.truncate(0)
-      buffer.puts(@obj)
+      buffer.puts(@writable)
     end
   end
 end

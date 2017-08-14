@@ -8,9 +8,9 @@ class TaskListTest < Minitest::Test
 
   def setup
     @persistence = double('persistence')
-    allow(@persistence).to receive(:save).and_return(@persistence)
+    allow(Todo::Persistence).to receive(:for).and_return(@persistence)
     allow(@persistence).to receive(:to)
-    @task_list = Todo::TaskList.new(StringIO.new, @persistence)
+    @task_list = Todo::TaskList.new(StringIO.new)
   end
 
   def test_adding_tasks
@@ -46,7 +46,7 @@ class TaskListTest < Minitest::Test
     expect(Todo::TaskBuilder).to receive(:new).with('guy').and_return(builder)
     expect(builder).to receive(:build).exactly(3).times
 
-    Todo::TaskList.new(initial_buffer, @persistence).save(StringIO.new)
+    Todo::TaskList.new(initial_buffer)
   end
 
   def test_done_on_empty_list_does_nothing
@@ -135,9 +135,9 @@ class TaskListTest < Minitest::Test
   def test_save_saves_self_to_persistence
     persistence = instance_double('Persistence')
     buffer = double('buffer')
-    expect(persistence).to receive(:save).with(@task_list).and_return(persistence)
-    expect(persistence).to receive(:to).with(buffer)
+    expect(Todo::Persistence).to receive(:for).with(@task_list).and_return(persistence)
+    expect(persistence).to receive(:write_to).with(buffer)
 
-    Todo::TaskList.new(StringIO.new, persistence).save(buffer)
+    Todo::TaskList.new(StringIO.new).save(buffer)
   end
 end
