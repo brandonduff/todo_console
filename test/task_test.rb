@@ -22,20 +22,17 @@ class TaskTest < Minitest::Test
 
   def test_done?
     assert(!@task_item.done?)
-    done_task = @task_item.done
-    assert(done_task.done?)
+    assert(@task_item.done.done?)
   end
 
   def test_in_progress?
     assert(@task_item.in_progress?)
-    done_task = @task_item.done
-    assert(!done_task.in_progress?)
+    assert(!@task_item.done.in_progress?)
   end
 
   def test_undo_with_one_done_task_undoes_it
     @task_item.done
-    undone_task = @task_item.undo
-    assert_equal('do this and that', undone_task.description)
+    assert_equal('do this and that', @task_item.undo.description)
   end
 
   def test_equality_is_true_when_description_and_doneness_are_eqaul

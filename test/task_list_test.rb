@@ -1,11 +1,16 @@
 require 'todo/task'
 require 'todo/task_list'
+require 'todo/task_builder'
+require 'ostruct'
 require_relative 'test_helper'
 
 class TaskListTest < Minitest::Test
 
   def setup
-    @task_list = Todo::TaskList.new
+    @persistence = double('persistence')
+    allow(@persistence).to receive(:save).and_return(@persistence)
+    allow(@persistence).to receive(:to)
+    @task_list = Todo::TaskList.new(StringIO.new, @persistence)
   end
 
   def test_adding_tasks
@@ -32,24 +37,16 @@ class TaskListTest < Minitest::Test
     assert_equal(@task_list.to_s, "hi\nguy")
   end
 
-  def test_save_writes_tasks_to_file
-    buffer = StringIO.new
-    @task_list.add_task(Todo::Task.new("hi\n"))
-
-    @task_list.save(buffer)
-
-    assert_equal(@task_list.to_s, buffer.string)
-  end
-
   def test_initialize_from_existing_buffer
     initial_buffer = StringIO.new
     initial_buffer << "hi\ntry\nguy\n"
-    result_buffer = StringIO.new
+    builder = instance_double("TaskBuilder")
+    expect(Todo::TaskBuilder).to receive(:new).with('hi').and_return(builder)
+    expect(Todo::TaskBuilder).to receive(:new).with('try').and_return(builder)
+    expect(Todo::TaskBuilder).to receive(:new).with('guy').and_return(builder)
+    expect(builder).to receive(:build).exactly(3).times
 
-    @task_list = Todo::TaskList.new(initial_buffer)
-    @task_list.save(result_buffer)
-
-    assert_equal(initial_buffer.string, result_buffer.string)
+    Todo::TaskList.new(initial_buffer, @persistence).save(StringIO.new)
   end
 
   def test_done_on_empty_list_does_nothing
@@ -133,5 +130,14 @@ class TaskListTest < Minitest::Test
 
   def test_undo_returns_self
     assert_equal(@task_list.undo, @task_list)
+  end
+
+  def test_save_saves_self_to_persistence
+    persistence = instance_double('Persistence')
+    buffer = double('buffer')
+    expect(persistence).to receive(:save).with(@task_list).and_return(persistence)
+    expect(persistence).to receive(:to).with(buffer)
+
+    Todo::TaskList.new(StringIO.new, persistence).save(buffer)
   end
 end

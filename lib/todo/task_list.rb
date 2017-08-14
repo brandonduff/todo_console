@@ -1,10 +1,12 @@
 require 'todo/task'
 require 'todo/task_builder'
+require 'todo/persistence'
 
 module Todo
   class TaskList
-    def initialize(buffer=StringIO.new)
+    def initialize(buffer=StringIO.new, persistence=Persistence.new)
       @tasks = buffer.string.split("\n").map { |description| TaskBuilder.new(description).build }
+      @persistence = persistence
     end
 
     def add_task(task)
@@ -51,8 +53,7 @@ module Todo
     end
 
     def save(buffer)
-      buffer.truncate(0)
-      buffer.puts(self)
+      @persistence.save(self).to(buffer)
     end
 
     protected
