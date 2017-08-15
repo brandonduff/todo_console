@@ -1,4 +1,5 @@
 Feature: Todos App
+
   Scenario: I can create new tasks
     When I run `todo new hi`
     And I run `todo new guy`
@@ -88,10 +89,38 @@ Feature: Todos App
     Clean the garage
     """
 
-   Scenario: I can set the current day
-     When I run `todo day 10/03/1993`
-     And I run `todo day`
-     Then stdout should contain exactly:
+  Scenario: I can set the current day
+    When I run `todo day 10/03/1993`
+    And I run `todo day`
+    Then stdout should contain exactly:
      """
      \n10/03/1993
      """
+
+  # Best approach may be to organize tasks into different files by
+  # day instead of one giant file. Mirrors how this works in analog
+  # and lets us take advantage of the file system to keep track of references.
+  # Also won't need to change much existing code, just wrap it in a day handler
+  # that modifies the filename to append the current date.
+  # First step may be to place our files in a hidden folder to not clutter the
+  # user's home directory.
+
+  Scenario: I can set todos for the current day
+    When I run `todo day 10/03/1993`
+    And I run `todo new happy birthday`
+    And I run `todo list`
+    Then stdout should contain:
+     """
+     happy birthday
+     """
+    And I run `todo day 1/1/1994`
+    And I run `todo new happy new year`
+    Then stdout should not contain:
+     """
+     happy birthday
+     """
+    And stdout should contain:
+     """
+     happy new year
+     """
+
