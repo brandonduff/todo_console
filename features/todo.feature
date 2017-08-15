@@ -88,13 +88,10 @@ Feature: Todos App
     Clean the garage
     """
 
-  Scenario: I can get the current day
-    Given a file named "tmp/fake_home/.current_day.txt" with:
-    """
-    10/03/1993
-    """
-    When I run `todo day`
-    Then stdout should contain exactly:
-    """
-    10/03/1993
-    """
+   Scenario: I can set the current day
+     When I run `todo day 10/03/1993`
+     And I run `todo day`
+     Then stdout should contain exactly:
+     """
+     \n10/03/1993
+     """
