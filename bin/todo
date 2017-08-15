@@ -108,9 +108,9 @@ command :day do |c|
 
   c.action do |_global_options, options, args|
     if (new_day = args.first)
-      Todo::Persistence.for(Todo::Day.new(new_day)).write_to(File.open(options[:filename], 'a'))
+      Todo::Persistence.for(new_day).write_to(File.open(options[:filename], 'a'))
     else
-      puts Todo::Day.new(File.read(options[:filename]))
+      puts File.read(options[:filename])
     end
   end
 end
