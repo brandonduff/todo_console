@@ -1,7 +1,7 @@
 module Todo
   class Persistence
-    def self.for(obj)
-      new(obj)
+    def self.for(writable)
+      new(writable)
     end
 
     def initialize(writable)
