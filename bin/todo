@@ -99,6 +99,14 @@ command :undo do |c|
   end
 end
 
+desc 'Get and set the current day'
+command :current_day do |c|
+  c.action do |_global_options, _options, args|
+    @tasks.undo
+    puts @tasks.unfinished_tasks
+  end
+end
+
 pre do |global, command, options, args|
   # Pre logic here
   # Return true to proceed; false to abort and not call the

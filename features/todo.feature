@@ -87,3 +87,11 @@ Feature: Todos App
     Wash the dishes
     Clean the garage
     """
+
+  Scenario: I can set the current day
+    When I run `todo day 10/03/1993`
+    And I run `todo day`
+    Then stdout should contain exactly:
+    """
+    10/03/1993
+    """
