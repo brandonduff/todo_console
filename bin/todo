@@ -100,10 +100,13 @@ command :undo do |c|
 end
 
 desc 'Get and set the current day'
-command :current_day do |c|
-  c.action do |_global_options, _options, args|
-    @tasks.undo
-    puts @tasks.unfinished_tasks
+command :day do |c|
+  c.desc 'Path to current day file'
+  c.default_value File.join(ENV['HOME'], '.current_day.txt')
+  c.flag [:f, :filename]
+
+  c.action do |_global_options, options, _args|
+    puts Todo::Day.new(File.read(options[:filename]))
   end
 end
 
