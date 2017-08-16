@@ -102,14 +102,6 @@ Feature: Todos App
      \n7-4-1776
      """
 
-  # Best approach may be to organize tasks into different files by
-  # day instead of one giant file. Mirrors how this works in analog
-  # and lets us take advantage of the file system to keep track of references.
-  # Also won't need to change much existing code, just wrap it in a day handler
-  # that modifies the filename to append the current date.
-  # First step may be to place our files in a hidden folder to not clutter the
-  # user's home directory.
-
   Scenario: I can set todos for the current day
     Given I run `todo day 10-03-1993`
     When I run `todo new happy birthday`
