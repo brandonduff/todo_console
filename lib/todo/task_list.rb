@@ -1,6 +1,4 @@
-require 'todo/task'
 require 'todo/task_builder'
-require 'todo/persistence'
 
 module Todo
   class TaskList
@@ -49,10 +47,6 @@ module Todo
       TaskList.new.tap do |list|
         @tasks.select(&:in_progress?).each { |done_task| list.add_task(done_task) }
       end
-    end
-
-    def save(buffer)
-      Persistence.for(self).write_to(buffer)
     end
 
     protected

@@ -1,15 +1,9 @@
-require 'todo/task'
 require 'todo/task_list'
-require 'todo/task_builder'
-require 'ostruct'
 require_relative 'test_helper'
 
 class TaskListTest < Minitest::Test
 
   def setup
-    @persistence = double('persistence')
-    allow(Todo::Persistence).to receive(:for).and_return(@persistence)
-    allow(@persistence).to receive(:to)
     @task_list = Todo::TaskList.new(StringIO.new)
   end
 
@@ -130,14 +124,5 @@ class TaskListTest < Minitest::Test
 
   def test_undo_returns_self
     assert_equal(@task_list.undo, @task_list)
-  end
-
-  def test_save_saves_self_to_persistence
-    persistence = instance_double('Persistence')
-    buffer = double('buffer')
-    expect(Todo::Persistence).to receive(:for).with(@task_list).and_return(persistence)
-    expect(persistence).to receive(:write_to).with(buffer)
-
-    Todo::TaskList.new(StringIO.new).save(buffer)
   end
 end
