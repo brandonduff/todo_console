@@ -32,21 +32,14 @@ command :new, :n do |c|
   c.desc 'Describe a switch to new'
   c.switch :s
 
-  c.desc 'Path to todo file'
-  c.default_value File.join(ENV['HOME'], '.todos.txt')
-  c.flag [:f, :filename]
   c.action do |global_options, options, args|
     @tasks.add_task(Todo::TaskBuilder.new(args.join(' ')).build)
-    @tasks.save(File.open(options[:filename], 'a'))
+    @tasks.save(File.open(File.join(ENV['HOME'], 'todos', "#{@current_day}.txt"), 'a+'))
   end
 end
 
 desc 'Lists todos'
 command :list, :ls do |c|
-  c.desc 'Path to todo file'
-  c.default_value File.join(ENV['HOME'], '.todos.txt')
-  c.flag [:f, :filename]
-
   c.desc 'List all todos (including done)'
   c.switch [:a, :all]
 
@@ -63,36 +56,24 @@ end
 desc 'Marks the next unfinished todo as done'
 arg_name 'Takes a filename'
 command :done, :d do |c|
-  c.desc 'Path to todo file'
-  c.default_value File.join(ENV['HOME'], '.todos.txt')
-  c.flag [:f, :filename]
-
   c.action do |global_options, options, args|
     puts @tasks.done
     puts @tasks.unfinished_tasks
-    @tasks.save(File.open(options[:filename], 'a'))
+    @tasks.save(File.open(@todo_file, 'a'))
   end
 end
 
 desc 'Clears all done todos'
 arg_name 'Takes a filename'
 command :clear do |c|
-  c.desc 'Path to todo file'
-  c.default_value File.join(ENV['HOME'], '.todos.txt')
-  c.flag [:f, :filename]
-
   c.action do |global_options, options, args|
     @tasks.clear
-    @tasks.save(File.open(options[:filename], 'a'))
+    @tasks.save(File.open(@todo_file, 'a'))
   end
 end
 
 desc 'Unmarks the last done todo as done'
 command :undo do |c|
-  c.desc 'Path to todo file'
-  c.default_value File.join(ENV['HOME'], '.todos.txt')
-  c.flag [:f, :filename]
-
   c.action do |_global_options, options, _args|
     @tasks.undo
     puts @tasks.unfinished_tasks
@@ -108,7 +89,7 @@ command :day do |c|
 
   c.action do |_global_options, options, args|
     if (new_day = args.first)
-      Todo::Persistence.for(new_day).write_to(File.open(options[:filename], 'a'))
+      Todo::Persistence.for(new_day).write_to(File.open(options[:filename], 'a+'))
     else
       puts File.read(options[:filename])
     end
@@ -121,7 +102,10 @@ pre do |global, command, options, args|
   # chosen command
   # Use skips_pre before a command to skip this block
   # on that command only
-  initial_buffer = File.exist?(options[:filename]) ? File.read(options[:filename]) : ''
+  Dir.mkdir(File.join(ENV['HOME'], 'todos')) unless Dir.exist?(File.join(ENV['HOME'], 'todos'))
+  @current_day = File.read(File.join(ENV['HOME'], '.current_day.txt')).strip
+  @todo_file = File.join(ENV['HOME'], 'todos', "#{@current_day}.txt")
+  initial_buffer = Todo::TaskListFetcher.new(@current_day).task_data
   @tasks = Todo::TaskList.new(StringIO.new(initial_buffer))
 end
 

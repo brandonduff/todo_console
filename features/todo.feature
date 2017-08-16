@@ -1,12 +1,17 @@
 Feature: Todos App
-
+  Background:
+    Given a file named "tmp/fake_home/.current_day.txt" with:
+    """
+    10-03-1993
+    """
   Scenario: I can create new tasks
+
     When I run `todo new hi`
     And I run `todo new guy`
-    Then the file "tmp/fake_home/.todos.txt" should contain "hi\nguy"
+    Then the file "tmp/fake_home/todos/10-03-1993.txt" should contain "hi\nguy"
 
   Scenario: I can list my existing tasks
-    Given a file named "tmp/fake_home/.todos.txt" with:
+    Given a file named "tmp/fake_home/todos/10-03-1993.txt" with:
     """
     Wash the dishes
     Clean the garage
@@ -21,7 +26,7 @@ Feature: Todos App
     """
 
   Scenario: I only see unfinished todos by default
-    Given a file named "tmp/fake_home/.todos.txt" with:
+    Given a file named "tmp/fake_home/todos/10-03-1993.txt" with:
     """
     ✓ Wash the dishes
     Clean the garage
@@ -33,7 +38,7 @@ Feature: Todos App
     """
 
   Scenario: I can mark the top todo as done
-    Given a file named "tmp/fake_home/.todos.txt" with:
+    Given a file named "tmp/fake_home/todos/10-03-1993.txt" with:
     """
     Wash the dishes
     Clean the garage
@@ -48,7 +53,7 @@ Feature: Todos App
     """
 
   Scenario: I can mark the second todo as done
-    Given a file named "tmp/fake_home/.todos.txt" with:
+    Given a file named "tmp/fake_home/todos/10-03-1993.txt" with:
     """
     ✓ Wash the dishes
     Clean the garage
@@ -64,7 +69,7 @@ Feature: Todos App
     """
 
   Scenario: I can clear done todos
-    Given a file named "tmp/fake_home/.todos.txt" with:
+    Given a file named "tmp/fake_home/todos/10-03-1993.txt" with:
     """
     \n✓ Wash the dishes
     Clean the garage
@@ -77,7 +82,7 @@ Feature: Todos App
     """
 
   Scenario: I can undo the last done todo
-    Given a file named "tmp/fake_home/.todos.txt" with:
+    Given a file named "tmp/fake_home/todos/10-03-1993.txt" with:
     """
     ✓ Wash the dishes
     Clean the garage
@@ -90,11 +95,11 @@ Feature: Todos App
     """
 
   Scenario: I can set the current day
-    When I run `todo day 10/03/1993`
+    When I run `todo day 7-4-1776`
     And I run `todo day`
     Then stdout should contain exactly:
      """
-     \n10/03/1993
+     \n7-4-1776
      """
 
   # Best approach may be to organize tasks into different files by
@@ -106,21 +111,18 @@ Feature: Todos App
   # user's home directory.
 
   Scenario: I can set todos for the current day
-    When I run `todo day 10/03/1993`
-    And I run `todo new happy birthday`
+    Given I run `todo day 10-03-1993`
+    When I run `todo new happy birthday`
+    And I run `todo day 1-1-1994`
+    And I run `todo new happy new year`
     And I run `todo list`
     Then stdout should contain:
      """
-     happy birthday
-     """
-    And I run `todo day 1/1/1994`
-    And I run `todo new happy new year`
-    Then stdout should not contain:
-     """
-     happy birthday
-     """
-    And stdout should contain:
-     """
      happy new year
+     """
+
+    And stdout should not contain:
+     """
+     happy birthday
      """
 
