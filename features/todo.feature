@@ -1,11 +1,8 @@
 Feature: Todos App
   Background:
-    Given a file named "tmp/fake_home/.current_day.txt" with:
-    """
-    10-03-1993
-    """
-  Scenario: I can create new tasks
+    Given I have my current day set to "10-03-1993"
 
+  Scenario: I can create new tasks
     When I run `todo new hi`
     And I run `todo new guy`
     Then the file "tmp/fake_home/todos/10-03-1993.txt" should contain "hi\nguy"
@@ -118,3 +115,8 @@ Feature: Todos App
      happy birthday
      """
 
+  Scenario: I can set todos for the current day
+    Given a non-empty list
+    When I change the current day
+    And I run `todo new happy new year`
+    Then my todo list should only contain "happy new year"
