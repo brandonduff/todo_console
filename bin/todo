@@ -34,7 +34,7 @@ command :new, :n do |c|
 
   c.action do |global_options, options, args|
     @tasks.add_task(Todo::TaskBuilder.new(args.join(' ')).build)
-    @tasks.save(File.open(File.join(ENV['HOME'], 'todos', "#{@current_day}.txt"), 'a+'))
+    write_tasks
   end
 end
 
@@ -59,16 +59,17 @@ command :done, :d do |c|
   c.action do |global_options, options, args|
     puts @tasks.done
     puts @tasks.unfinished_tasks
-    @tasks.save(File.open(@todo_file, 'a'))
+    write_tasks
   end
 end
 
 desc 'Clears all done todos'
 arg_name 'Takes a filename'
+
 command :clear do |c|
   c.action do |global_options, options, args|
     @tasks.clear
-    @tasks.save(File.open(@todo_file, 'a'))
+    write_tasks
   end
 end
 
@@ -119,6 +120,10 @@ on_error do |exception|
   # Error logic here
   # return false to skip default error handling
   true
+end
+
+def write_tasks
+  Todo::Persistence.for(@tasks).write_to(File.open(@todo_file, 'a'))
 end
 
 exit run(ARGV)
