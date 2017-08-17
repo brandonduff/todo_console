@@ -120,3 +120,7 @@ Feature: Todos App
     When I change the current day
     And I run `todo new happy new year`
     Then my todo list should only contain "happy new year"
+
+  Scenario: I can set current day to today
+    When I run `todo day today`
+    Then the file "tmp/fake_home/.current_day.txt" should contain the current day

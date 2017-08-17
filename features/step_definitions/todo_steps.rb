@@ -22,3 +22,7 @@ end
 Given(/^I have my current day set to "([^"]*)"$/) do |day|
   step %(a file named "tmp/fake_home/.current_day.txt" with:), day
 end
+
+Then(/^the file "([^"]*)" should contain the current day$/) do |file|
+  step %(the file "#{file}" should contain "#{Date.today.strftime("%d-%m-%Y")}")
+end
