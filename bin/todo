@@ -84,17 +84,21 @@ end
 desc 'Get and set the current day'
 arg_name 'New date'
 command :day do |c|
-  c.desc 'Path to current day file'
-  c.default_value File.join(ENV['HOME'], '.current_day.txt')
-  c.flag [:f, :filename]
-
   c.action do |_global_options, options, args|
     if (new_day = args.first)
-      Todo::Persistence.for(Todo::DayFormatter.format(new_day)).write_to(File.open(options[:filename], 'a+'))
+      Todo::Persistence.for(Todo::DayFormatter.format(new_day)).write_to(File.open(current_day_file, 'a+'))
     else
-      puts File.read(options[:filename])
+      puts Todo::DayFormatter.format(read_current_day)
     end
   end
+end
+
+def current_day_file
+  File.join(ENV['HOME'], '.current_day.txt')
+end
+
+def read_current_day
+  File.exist?(current_day_file) ? File.read(current_day_file).strip : ''
 end
 
 pre do |global, command, options, args|
@@ -104,7 +108,7 @@ pre do |global, command, options, args|
   # Use skips_pre before a command to skip this block
   # on that command only
   Dir.mkdir(File.join(ENV['HOME'], 'todos')) unless Dir.exist?(File.join(ENV['HOME'], 'todos'))
-  @current_day = File.read(File.join(ENV['HOME'], '.current_day.txt')).strip
+  @current_day = Todo::DayFormatter.format(read_current_day)
   @todo_file = File.join(ENV['HOME'], 'todos', "#{@current_day}.txt")
   initial_buffer = Todo::TaskListFetcher.new(@current_day).task_data
   @tasks = Todo::TaskList.new(StringIO.new(initial_buffer))
@@ -123,7 +127,9 @@ on_error do |exception|
 end
 
 def write_tasks
-  Todo::Persistence.for(@tasks).write_to(File.open(@todo_file, 'a'))
+  file = File.open(@todo_file, 'a')
+  Todo::Persistence.for(@tasks).write_to(file)
+  file.close
 end
 
 exit run(ARGV)
