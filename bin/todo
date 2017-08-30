@@ -18,8 +18,8 @@ version Todo::VERSION
 subcommand_option_handling :normal
 arguments :strict
 
-c.desc 'List todos for the current week'
-c.switch [:w, :week]
+desc 'List todos for the current week'
+switch [:w, :week]
 
 desc 'Create a new todo'
 arg_name 'Todo text'
@@ -101,8 +101,8 @@ pre do |global, command, options, args|
   # on that command only
   Dir.mkdir(File.join(ENV['HOME'], 'todos')) unless Dir.exist?(File.join(ENV['HOME'], 'todos'))
   @current_day = Todo::DayFormatter.format(read_current_day)
-  @todo_file = File.join(ENV['HOME'], 'todos', "#{@current_day}.txt")
-  initial_buffer = Todo::TaskListFetcher.new(@current_day).for_week.task_data
+  @todo_file = File.join(ENV['HOME'], 'todos', "#{Date.parse(@current_day).strftime("%d-%m-%Y")}.txt")
+  initial_buffer = Todo::TaskListFetcher.new(Date.parse(@current_day)).task_data
   @tasks = Todo::TaskList.new(StringIO.new(initial_buffer))
 end
 

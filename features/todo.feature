@@ -90,14 +90,3 @@ Feature: Todos App
     Wash the dishes
     Clean the garage
     """
-
-  Scenario: I can list todos for the current week
-    Given a file named "tmp/fake_home/todos/09-26-1993.txt" with:
-    """
-    Clean the garage
-    """
-    When I run `todo --week list`
-    Then stdout should contain exactly:
-    """
-    Clean the garage
-    """

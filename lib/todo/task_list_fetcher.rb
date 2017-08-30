@@ -11,12 +11,15 @@ module Todo
     end
 
     def todo_file
-      File.join(ENV['HOME'], 'todos', @day + '.txt')
+      File.join(ENV['HOME'], 'todos', day_string + '.txt')
     end
 
     def for_week
-      current_date = Date.parse(@day)
-      MultiTaskListFetcher.new(Range.new(current_date - 7, current_date))
+      MultiTaskListFetcher.new(Range.new(@day - 7, @day))
+    end
+
+    def day_string
+      @day.strftime("%d-%m-%Y")
     end
   end
 end

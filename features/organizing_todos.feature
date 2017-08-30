@@ -8,7 +8,7 @@ Feature: Organizing Todos
     And I run `todo day`
     Then stdout should contain exactly:
     """
-    \n7-4-1776
+    \n07-04-1776
     """
 
   Scenario: I can set todos for the current day
@@ -36,3 +36,14 @@ Feature: Organizing Todos
   Scenario: I can set current day to today
     When I run `todo day today`
     Then the file "tmp/fake_home/.current_day.txt" should contain the current day
+
+  Scenario: I can list todos for the current week
+    Given a file named "tmp/fake_home/todos/09-26-1993.txt" with:
+    """
+    Clean the garage
+    """
+    When I run `todo --week list`
+    Then stdout should contain exactly:
+    """
+    Clean the garage
+    """

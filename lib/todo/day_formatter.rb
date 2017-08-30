@@ -6,7 +6,7 @@ module Todo
       if date_string == "today" || date_string == ""
         Date.today.strftime("%d-%m-%Y")
       else
-        date_string
+        Date.parse(date_string).strftime("%d-%m-%Y")
       end
     end
   end
