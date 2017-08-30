@@ -18,20 +18,12 @@ version Todo::VERSION
 subcommand_option_handling :normal
 arguments :strict
 
-desc 'Describe some switch here'
-switch [:s, :switch]
-
-desc 'Describe some flag here'
-default_value 'the default'
-arg_name 'The name of the argument'
-flag [:f, :flagname]
+c.desc 'List todos for the current week'
+c.switch [:w, :week]
 
 desc 'Create a new todo'
 arg_name 'Todo text'
 command :new, :n do |c|
-  c.desc 'Describe a switch to new'
-  c.switch :s
-
   c.action do |global_options, options, args|
     @tasks.add_task(Todo::TaskBuilder.new(args.join(' ')).build)
     write_tasks
@@ -110,7 +102,7 @@ pre do |global, command, options, args|
   Dir.mkdir(File.join(ENV['HOME'], 'todos')) unless Dir.exist?(File.join(ENV['HOME'], 'todos'))
   @current_day = Todo::DayFormatter.format(read_current_day)
   @todo_file = File.join(ENV['HOME'], 'todos', "#{@current_day}.txt")
-  initial_buffer = Todo::TaskListFetcher.new(@current_day).task_data
+  initial_buffer = Todo::TaskListFetcher.new(@current_day).for_week.task_data
   @tasks = Todo::TaskList.new(StringIO.new(initial_buffer))
 end
 

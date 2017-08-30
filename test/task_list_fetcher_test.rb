@@ -36,4 +36,11 @@ class TaskListFetcherTest < Minitest::Test
     fetcher = Todo::TaskListFetcher.new('7-4-1776')
     assert_equal('tmp/todos/7-4-1776.txt', fetcher.todo_file)
   end
+
+  def test_for_week_returns_multi_task_list_fetcher
+    multi_task_fetcher_double = Object.new
+    allow(Todo::MultiTaskListFetcher).to receive(:new).with(@current_day).and_return(multi_task_fetcher_double)
+
+    assert_equal(multi_task_fetcher_double, Todo::TaskListFetcher.new(@current_day).for_week)
+  end
 end
