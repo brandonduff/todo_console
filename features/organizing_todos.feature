@@ -38,7 +38,7 @@ Feature: Organizing Todos
     Then the file "tmp/fake_home/.current_day.txt" should contain the current day
 
   Scenario: I can list todos for the current week
-    Given a file named "tmp/fake_home/todos/09-26-1993.txt" with:
+    Given a file named "tmp/fake_home/todos/03-03-1993.txt" with:
     """
     Clean the garage
     """
