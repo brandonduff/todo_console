@@ -14,14 +14,12 @@ module Todo
       if (first_unfinished_todo_position = @tasks.find_index(&:in_progress?))
         @tasks[first_unfinished_todo_position] = @tasks[first_unfinished_todo_position].done
       end
-      self
     end
 
     def undo
       if (first_done_position = @tasks.find_index(&:done?))
         @tasks[first_done_position] = @tasks[first_done_position].undo
       end
-      self
     end
 
     def clear

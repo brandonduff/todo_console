@@ -48,10 +48,6 @@ class TaskListTest < Minitest::Test
     assert_equal(@task_list.to_s, '')
   end
 
-  def test_done_returns_self
-    assert_equal(@task_list.done, @task_list)
-  end
-
   def test_done_on_one_task_marks_todo_as_done
     @task_list.add_task(Todo::Task.new('hi'))
     @task_list.done
@@ -120,9 +116,5 @@ class TaskListTest < Minitest::Test
     @task_list.undo
 
     assert_equal(done_task_list, @task_list.unfinished_tasks)
-  end
-
-  def test_undo_returns_self
-    assert_equal(@task_list.undo, @task_list)
   end
 end
