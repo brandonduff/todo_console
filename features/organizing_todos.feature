@@ -47,3 +47,8 @@ Feature: Organizing Todos
     """
     Clean the garage
     """
+
+  Scenario: When setting the current day, the year defaults to the current year
+    When I run `todo day 7-11`
+    And I run `todo day`
+    Then the current day should be set to "07-11" of the current year

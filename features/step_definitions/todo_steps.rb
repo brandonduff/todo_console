@@ -26,3 +26,7 @@ end
 Then(/^the file "([^"]*)" should contain the current day$/) do |file|
   step %(the file "#{file}" should contain "#{Date.today.strftime("%d-%m-%Y")}")
 end
+
+Then(/^the current day should be set to "([^"]*)" of the current year$/) do |date|
+  step %(the file "tmp/fake_home/.current_day.txt" should contain "#{Date.parse(date + "-#{Date.today.strftime("%Y")}").strftime("%d-%m-%Y")}")
+end
