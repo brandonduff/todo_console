@@ -18,6 +18,8 @@ module Todo
       MultiTaskListFetcher.new(Range.new(@day - 7, @day))
     end
 
+    private
+
     def day_string
       @day.strftime("%d-%m-%Y")
     end
