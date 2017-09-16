@@ -15,10 +15,18 @@ module Todo
     end
 
     def for_week
-      MultiTaskListFetcher.new(Range.new(@day - 7, @day))
+      multi_list_fetcher_for_days_ago(7)
+    end
+
+    def for_month
+      multi_list_fetcher_for_days_ago(31)
     end
 
     private
+
+    def multi_list_fetcher_for_days_ago(days_ago)
+      MultiTaskListFetcher.new(Range.new(@day - days_ago, @day))
+    end
 
     def day_string
       @day.strftime("%d-%m-%Y")

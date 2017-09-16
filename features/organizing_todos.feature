@@ -48,6 +48,17 @@ Feature: Organizing Todos
     Clean the garage
     """
 
+  Scenario: I can list todos for the current month
+    Given a file named "tmp/fake_home/todos/15-02-1993.txt" with:
+    """
+    Clean the garage
+    """
+    When I run `todo --month list`
+    Then stdout should contain exactly:
+    """
+    Clean the garage
+    """
+
   Scenario: When setting the current day, the year defaults to the current year
     When I run `todo day 7-11`
     And I run `todo day`

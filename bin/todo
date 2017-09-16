@@ -21,6 +21,9 @@ arguments :strict
 desc 'List todos for the current week'
 switch [:w, :week]
 
+desc 'List todos for the current month'
+switch [:m, :month]
+
 desc 'Create a new todo'
 arg_name 'Todo text'
 command :new, :n do |c|
@@ -127,7 +130,13 @@ end
 
 def task_fetcher(global)
   fetcher = Todo::TaskListFetcher.new(Date.parse(@current_day))
-  global[:week] ? fetcher.for_week : fetcher
+  if global[:month]
+    fetcher.for_month
+  elsif global[:week]
+    fetcher.for_week
+  else
+    fetcher
+  end
 end
 
 exit run(ARGV)
