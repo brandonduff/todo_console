@@ -8,7 +8,7 @@
     - ~~Flag could show todos for the~~
     - set_day could support relative days, or absolute
         - ~~Maybe will default to current year, so I could do todo set_day 11/7~~
-        - todo set_day monday would be cool too
+        - ~~todo set_day monday would be cool too~~
 - Could expand day feature to a general "list" feature.
     - Since days can hold lists, why not other arbitrary things?
     - Could work the same way, sorting lists of todos by list name
