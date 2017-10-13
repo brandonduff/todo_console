@@ -1,13 +1,13 @@
 ### Todo List
 
 - Add the ability to group todos by day
-    - ~This might have an interface like todo set_day will change the
+    - ~~This might have an interface like todo set_day will change the
       current day, and then all the normal todo commands are scoped to
-      that day.~
-    - ~Todo day today should set the day to today's date~
-    - ~Flag could show todos for the~
+      that day.~~
+    - ~~`Todo day today should set the day to today's date~~
+    - ~~Flag could show todos for the~~
     - set_day could support relative days, or absolute
-        - ~Maybe will default to current year, so I could do todo set_day 11/7~
+        - ~~Maybe will default to current year, so I could do todo set_day 11/7~~
         - todo set_day monday would be cool too
 - Could expand day feature to a general "list" feature.
     - Since days can hold lists, why not other arbitrary things?
