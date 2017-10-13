@@ -30,3 +30,7 @@ end
 Then(/^the current day should be set to "([^"]*)" of the current year$/) do |date|
   step %(the file "tmp/fake_home/.current_day.txt" should contain "#{Date.parse(date + "-#{Date.today.strftime("%Y")}").strftime("%d-%m-%Y")}")
 end
+
+Then(/^the current day should be the nearest Tuesday$/) do
+  step %(the file "tmp/fake_home/.current_day.txt" should contain "#{Date.parse('Tuesday').strftime("%d-%m-%Y")}")
+end

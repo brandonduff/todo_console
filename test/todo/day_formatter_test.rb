@@ -22,4 +22,8 @@ class DayFormatterTest < Minitest::Test
   def test_format_without_year_appends_current_year
     assert_equal("07-11-1993", Todo::DayFormatter.format("7-11"))
   end
+
+  def test_format_with_weekday_string_gives_next_occurrence
+    assert_equal(Date.parse("Tuesday").strftime("%d-%m-%Y"), Todo::DayFormatter.format("Tuesday"))
+  end
 end

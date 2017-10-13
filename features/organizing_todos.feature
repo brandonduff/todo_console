@@ -66,8 +66,4 @@ Feature: Organizing Todos
     
   Scenario: I can set to nearest upcoming day by name
     When I run `todo day tuesday`
-    And I run `todo day`
-    Then stdout should contain exactly:
-    """
-    10-05-1993
-    """
+    Then the current day should be the nearest Tuesday

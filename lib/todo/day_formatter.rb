@@ -17,8 +17,10 @@ module Todo
         parse_current_year_date
       elsif date_string == "today" || date_string == ""
         today
-      else
+      elsif date_string =~ /\d+-\d+-\d+/
         parse_full_date_string
+      else
+        parse_relative_day
       end
     end
 
@@ -31,6 +33,10 @@ module Todo
     end
 
     def parse_full_date_string
+      Date.parse(date_string).strftime("%d-%m-%Y")
+    end
+
+    def parse_relative_day
       Date.parse(date_string).strftime("%d-%m-%Y")
     end
   end
