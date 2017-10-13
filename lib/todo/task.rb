@@ -1,6 +1,5 @@
 module Todo
   class Task
-    attr_reader :description
 
     def initialize(description, done = false)
       @description = description
