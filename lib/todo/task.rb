@@ -26,8 +26,8 @@ module Todo
       @done
     end
 
-    def ==(other_task)
-      other_task.description == description && other_task.done? == done?
+    def ==(other)
+      other.description == description && other.done? == done?
     end
   end
 end
