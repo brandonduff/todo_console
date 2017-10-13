@@ -1,5 +1,5 @@
 require 'todo/task_builder'
-require_relative 'test_helper'
+require 'test_helper'
 
 class TaskBuilderTest < Minitest::Test
   def test_no_checkmark_builds_undone_task

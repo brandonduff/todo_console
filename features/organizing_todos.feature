@@ -63,3 +63,11 @@ Feature: Organizing Todos
     When I run `todo day 7-11`
     And I run `todo day`
     Then the current day should be set to "07-11" of the current year
+    
+  Scenario: I can set to nearest upcoming day by name
+    When I run `todo day tuesday`
+    And I run `todo day`
+    Then stdout should contain exactly:
+    """
+    10-05-1993
+    """

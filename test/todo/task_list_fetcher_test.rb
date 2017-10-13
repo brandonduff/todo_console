@@ -1,6 +1,6 @@
 require 'todo/task_list_fetcher'
 require 'fileutils'
-require_relative 'test_helper'
+require 'test_helper'
 
 class TaskListFetcherTest < Minitest::Test
   def setup

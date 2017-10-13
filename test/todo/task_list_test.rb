@@ -1,5 +1,5 @@
 require 'todo/task_list'
-require_relative 'test_helper'
+require 'test_helper'
 
 class TaskListTest < Minitest::Test
 

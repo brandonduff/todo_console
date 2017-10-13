@@ -38,7 +38,6 @@ command :list, :ls do |c|
   c.desc 'List all todos (including done)'
   c.switch [:a, :all]
 
-
   c.action do |global_options, options, args|
     if options[:all]
       puts @tasks

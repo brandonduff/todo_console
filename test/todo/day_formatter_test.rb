@@ -1,6 +1,6 @@
 require 'todo/day_formatter'
 require 'date'
-require_relative 'test_helper'
+require 'test_helper'
 
 class DayFormatterTest < Minitest::Test
   def setup
