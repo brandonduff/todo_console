@@ -3,9 +3,6 @@ require 'gli'
 begin # XXX: Remove this begin/rescue before distributing your app
   require 'todo'
 rescue LoadError
-  STDERR.puts "In development, you need to use `bundle exec bin/todo` to run your app"
-  STDERR.puts "At install-time, RubyGems will make sure lib, etc. are in the load path"
-  STDERR.puts "Feel free to remove this message from bin/todo now"
   exit 64
 end
 
@@ -27,7 +24,7 @@ switch [:m, :month]
 desc 'Create a new todo'
 arg_name 'Todo text'
 command :new, :n do |c|
-  c.action do |global_options, options, args|
+  c.action do |_global_options, _options, args|
     @tasks.add_task(Todo::TaskBuilder.new(args.join(' ')).build)
     write_tasks
   end
@@ -38,7 +35,7 @@ command :list, :ls do |c|
   c.desc 'List all todos (including done)'
   c.switch [:a, :all]
 
-  c.action do |global_options, options, args|
+  c.action do |_global_options, options, _args|
     if options[:all]
       puts @tasks
     else
@@ -50,7 +47,7 @@ end
 desc 'Marks the next unfinished todo as done'
 arg_name 'Takes a filename'
 command :done, :d do |c|
-  c.action do |global_options, options, args|
+  c.action do |_global_options, _options, _args|
     @tasks.done
     puts @tasks
     puts @tasks.unfinished_tasks
@@ -62,7 +59,7 @@ desc 'Clears all done todos'
 arg_name 'Takes a filename'
 
 command :clear do |c|
-  c.action do |global_options, options, args|
+  c.action do |_global_options, _options, _args|
     @tasks.clear
     write_tasks
   end
@@ -70,7 +67,7 @@ end
 
 desc 'Unmarks the last done todo as done'
 command :undo do |c|
-  c.action do |_global_options, options, _args|
+  c.action do |_global_options, _options, _args|
     @tasks.undo
     puts @tasks.unfinished_tasks
   end
@@ -79,7 +76,7 @@ end
 desc 'Get and set the current day'
 arg_name 'New date'
 command :day do |c|
-  c.action do |_global_options, options, args|
+  c.action do |_global_options, _options, args|
     if (new_day = args.first)
       Todo::Persistence.for(Todo::DayFormatter.format(new_day)).write_to(File.open(current_day_file, 'a+'))
     else
