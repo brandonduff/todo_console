@@ -9,7 +9,7 @@ module Todo
         Dir.mkdir(File.join(ENV['HOME'], 'todos')) unless Dir.exist?(File.join(ENV['HOME'], 'todos'))
         @current_day = Todo::DayFormatter.format(read_current_day)
         @todo_file = File.join(ENV['HOME'], 'todos', "#{Date.parse(@current_day).strftime("%d-%m-%Y")}.txt")
-        initial_buffer = task_fetcher(@request).task_data
+        initial_buffer = task_fetcher.task_data
         tasks = Todo::TaskList.new(StringIO.new(initial_buffer))
 
         if @request[:all]
@@ -33,11 +33,11 @@ module Todo
         File.join(ENV['HOME'], '.current_day.txt')
       end
 
-      def task_fetcher(global)
+      def task_fetcher
         fetcher = Todo::TaskListFetcher.new(Date.parse(@current_day))
-        if global[:month]
+        if @request[:month]
           fetcher.for_month
-        elsif global[:week]
+        elsif @request[:week]
           fetcher.for_week
         else
           fetcher
