@@ -35,12 +35,8 @@ command :list, :ls do |c|
   c.desc 'List all todos (including done)'
   c.switch [:a, :all]
 
-  c.action do |_global_options, options, _args|
-    if options[:all]
-      puts @tasks
-    else
-      puts @tasks.unfinished_tasks
-    end
+  c.action do |global_options, options, _args|
+    Todo::UseCases::ListTodos.new(global_options.merge(options)).perform
   end
 end
 
