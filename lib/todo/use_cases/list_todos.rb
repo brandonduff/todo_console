@@ -10,16 +10,20 @@ module Todo
         @current_day = Todo::DayFormatter.format(read_current_day)
         @todo_file = File.join(ENV['HOME'], 'todos', "#{Date.parse(@current_day).strftime("%d-%m-%Y")}.txt")
         initial_buffer = task_fetcher(@request).task_data
-        @tasks = Todo::TaskList.new(StringIO.new(initial_buffer))
+        tasks = Todo::TaskList.new(StringIO.new(initial_buffer))
 
         if @request[:all]
-          puts @tasks
+          present(tasks)
         else
-          puts @tasks.unfinished_tasks
+          present(tasks.unfinished_tasks)
         end
       end
 
       private
+
+      def present(tasks)
+        tasks.to_a.map(&:description)
+      end
 
       def read_current_day
         File.exist?(current_day_file) ? File.read(current_day_file).strip : ''
