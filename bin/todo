@@ -74,7 +74,7 @@ arg_name 'New date'
 command :day do |c|
   c.action do |_global_options, _options, args|
     if (new_day = args.first)
-      Todo::Persistence.for(Todo::DayFormatter.format(new_day)).write_to(File.open(current_day_file, 'a+'))
+      Todo::Writer.for(Todo::DayFormatter.format(new_day)).write_to(File.open(current_day_file, 'a+'))
     else
       puts Todo::DayFormatter.format(read_current_day)
     end
@@ -116,7 +116,7 @@ end
 
 def write_tasks
   file = File.open(@todo_file, 'a')
-  Todo::Persistence.for(@tasks).write_to(file)
+  Todo::Writer.for(@tasks).write_to(file)
   file.close
 end
 

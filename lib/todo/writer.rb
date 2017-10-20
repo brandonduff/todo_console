@@ -1,5 +1,5 @@
 module Todo
-  class Persistence
+  class Writer
     def self.for(writable)
       new(writable)
     end

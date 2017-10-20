@@ -1,6 +1,6 @@
 require 'todo/version.rb'
 require 'todo/task_list'
-require 'todo/persistence'
+require 'todo/writer'
 require 'todo/task_builder'
 require 'todo/task_list_fetcher'
 require 'todo/day_formatter'
