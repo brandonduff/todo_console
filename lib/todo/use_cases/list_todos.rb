@@ -1,3 +1,9 @@
+require 'todo/task_list_fetcher'
+require 'todo/day_formatter'
+require 'todo/task_list'
+require 'todo/env_helper'
+require 'todo/reader'
+
 module Todo
   module UseCases
     class ListTodos
@@ -7,9 +13,9 @@ module Todo
 
       def perform
         create_todo_directory
-        current_day = Todo::DayFormatter.format(read_current_day)
+        current_day = DayFormatter.format(read_current_day)
         initial_buffer = task_fetcher(current_day).task_data
-        tasks = Todo::TaskList.new(StringIO.new(initial_buffer))
+        tasks = TaskList.new(StringIO.new(initial_buffer))
 
         if @request[:all]
           present(tasks)
@@ -25,11 +31,7 @@ module Todo
       end
 
       def read_current_day
-        File.exist?(current_day_file) ? File.read(current_day_file).strip : ''
-      end
-
-      def current_day_file
-        File.join(ENV['HOME'], '.current_day.txt')
+        Reader.new(EnvHelper.new).current_day
       end
 
       def create_todo_directory
@@ -37,7 +39,7 @@ module Todo
       end
 
       def task_fetcher(current_day)
-        fetcher = Todo::TaskListFetcher.new(Date.parse(current_day))
+        fetcher = TaskListFetcher.new(Date.parse(current_day))
         if @request[:month]
           fetcher.for_month
         elsif @request[:week]
