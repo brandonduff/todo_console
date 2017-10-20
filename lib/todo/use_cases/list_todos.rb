@@ -1,9 +1,3 @@
-require 'todo/task_list_fetcher'
-require 'todo/day_formatter'
-require 'todo/task_list'
-require 'todo/env_helper'
-require 'todo/reader'
-
 module Todo
   module UseCases
     class ListTodos

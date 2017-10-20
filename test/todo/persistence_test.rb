@@ -1,5 +1,4 @@
 require 'test_helper'
-require 'todo/writer'
 
 class TaskTest < Minitest::Test
   def test_saving_obj_to_buffer

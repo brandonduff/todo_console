@@ -1,5 +1,4 @@
 require 'test_helper'
-require 'todo/env_helper'
 
 module Todo
   class EnvHelperTest < Minitest::Test

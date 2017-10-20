@@ -1,5 +1,3 @@
-require 'todo/task_builder'
-
 module Todo
   class TaskList
     def initialize(buffer=StringIO.new)

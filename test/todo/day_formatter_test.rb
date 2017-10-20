@@ -1,5 +1,3 @@
-require 'todo/day_formatter'
-require 'date'
 require 'test_helper'
 
 class DayFormatterTest < Minitest::Test

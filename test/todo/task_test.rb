@@ -1,5 +1,4 @@
 require 'test_helper'
-require 'todo/task'
 
 module Todo
   class TaskTest < Minitest::Test

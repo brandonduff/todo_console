@@ -1,4 +1,3 @@
-require 'todo/task_list_fetcher'
 require 'fileutils'
 require 'test_helper'
 

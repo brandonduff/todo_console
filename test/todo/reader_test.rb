@@ -1,9 +1,5 @@
 require 'test_helper'
 require 'tempfile'
-require 'todo/reader'
-require 'todo/task_list'
-require 'todo/task'
-require 'todo/writer'
 
 module Todo
   class ReaderTest < Minitest::Test

@@ -1,6 +1,4 @@
 require 'test_helper'
-require 'date'
-require 'todo/task_list_fetcher'
 
 class MultiTaskListFetcherTest < Minitest::Test
 

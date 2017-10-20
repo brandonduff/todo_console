@@ -1,4 +1,3 @@
-require 'todo/task_builder'
 require 'test_helper'
 
 class TaskBuilderTest < Minitest::Test

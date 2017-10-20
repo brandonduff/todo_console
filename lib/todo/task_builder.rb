@@ -1,5 +1,3 @@
-require 'todo/task'
-
 module Todo
   class TaskBuilder
     def initialize(description)

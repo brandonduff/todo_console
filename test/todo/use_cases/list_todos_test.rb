@@ -1,5 +1,4 @@
 require 'test_helper'
-require 'todo/use_cases/list_todos'
 
 module Todo
   module UseCases

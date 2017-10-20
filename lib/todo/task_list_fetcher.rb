@@ -1,5 +1,3 @@
-require_relative './multi_task_list_fetcher'
-
 module Todo
   class TaskListFetcher
     def initialize(day)

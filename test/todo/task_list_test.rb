@@ -1,4 +1,3 @@
-require 'todo/task_list'
 require 'test_helper'
 
 class TaskListTest < Minitest::Test
