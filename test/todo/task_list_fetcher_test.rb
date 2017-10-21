@@ -7,6 +7,7 @@ class TaskListFetcherTest < Minitest::Test
     @current_day = Date.parse('10-03-1993')
     @current_day_file_name = 'tmp/current_day.txt'
     @todo_file_name = 'tmp/todos/10-03-1993.txt'
+    Dir.mkdir('tmp') unless Dir.exist?('tmp')
     current_day = File.open(@current_day_file_name, 'a')
     current_day.puts('10-03-1993')
     Dir.mkdir('tmp/todos') unless Dir.exist?('tmp/todos')

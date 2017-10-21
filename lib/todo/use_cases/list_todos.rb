@@ -6,7 +6,6 @@ module Todo
       end
 
       def perform
-        create_todo_directory
         current_day = DayFormatter.format(read_current_day)
         initial_buffer = task_fetcher(current_day).task_data
         tasks = TaskList.new(StringIO.new(initial_buffer))
@@ -26,10 +25,6 @@ module Todo
 
       def read_current_day
         Reader.new(EnvHelper.new).current_day
-      end
-
-      def create_todo_directory
-        Dir.mkdir(File.join(ENV['HOME'], 'todos')) unless Dir.exist?(File.join(ENV['HOME'], 'todos'))
       end
 
       def task_fetcher(current_day)
