@@ -36,7 +36,7 @@ command :list, :ls do |c|
   c.switch [:a, :all]
 
   c.action do |global_options, options, _args|
-    puts Todo::UseCases::ListTodos.new(global_options.merge(options)).perform.join('\n')
+    puts Todo::UseCases::ListTodos.new(global_options.merge(options)).perform.join("\n")
   end
 end
 
