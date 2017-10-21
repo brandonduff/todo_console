@@ -10,7 +10,6 @@ module Todo
         ENV['HOME'] = 'tmp'
         current_day = Date.parse('10-03-1993')
         current_day_file_name = 'tmp/.current_day.txt'
-        @todo_file_name = 'tmp/todos/10-03-1993.txt'
         Dir.mkdir('tmp') unless Dir.exist?('tmp')
         current_day = File.open(current_day_file_name, 'a')
         current_day.puts('10-03-1993')
@@ -29,13 +28,16 @@ module Todo
         assert_equal([], todos)
       end
 
-      def test_list_with_one_todo_returns_the_todo
-        todo_file = File.open(@todo_file_name, 'w+')
+      def test_list_returns_todos_as_array
+        todo_file_name = 'tmp/todos/10-03-1993.txt'
+        todo_file = File.open(todo_file_name, 'w+')
         todo_file.puts('hello')
+        todo_file.puts('goodbye')
         todo_file.close
 
         todos = ListTodos.new({}).perform
-        assert_equal(['hello'], todos)
+
+        assert_equal(%w(hello goodbye), todos)
       end
     end
   end
