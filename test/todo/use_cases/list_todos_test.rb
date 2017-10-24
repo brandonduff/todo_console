@@ -29,15 +29,40 @@ module Todo
       end
 
       def test_list_returns_todos_as_array
-        todo_file_name = 'tmp/todos/10-03-1993.txt'
-        todo_file = File.open(todo_file_name, 'w+')
-        todo_file.puts('hello')
-        todo_file.puts('goodbye')
-        todo_file.close
+        build_todo_file
+        save_todo_file
 
         todos = ListTodos.new({}).perform
 
         assert_equal(%w(hello goodbye), todos)
+      end
+
+      def test_all_options_returns_unfinished_tasks
+        build_todo_file
+        done_todo = Task.new('done', true)
+        @task_list.add_task(done_todo)
+        save_todo_file
+
+        todos = ListTodos.new(all: true).perform
+
+        assert_equal([@todo1.description, @todo2.description, done_todo.description], todos)
+      end
+
+      private
+
+      def build_todo_file
+        todo_file_name = 'tmp/todos/10-03-1993.txt'
+        @todo_file = File.open(todo_file_name, 'w+')
+        @task_list = TaskList.new
+        @todo1 = Task.new('hello', false)
+        @task_list.add_task(@todo1)
+        @todo2 = Task.new('goodbye', false)
+        @task_list.add_task(@todo2)
+      end
+
+      def save_todo_file
+        Writer.for(@task_list).write_to(@todo_file)
+        @todo_file.close
       end
     end
   end
