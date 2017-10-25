@@ -29,8 +29,9 @@ module Todo
       end
 
       def test_list_returns_todos_as_array
+        task_list = build_task_list([{ description: 'hello' }, { description: 'goodbye' }])
         build_todo_file
-        save_todo_file
+        save_todo_file(task_list)
 
         todos = ListTodos.new({}).perform
 
@@ -39,29 +40,36 @@ module Todo
 
       def test_all_options_returns_unfinished_tasks
         build_todo_file
+        task_list = build_task_list([{ description: 'hello' }])
         done_todo = Task.new('done', true)
-        @task_list.add_task(done_todo)
-        save_todo_file
+        task_list.add_task(done_todo)
+        save_todo_file(task_list)
 
         todos = ListTodos.new(all: true).perform
 
-        assert_equal([@todo1.description, @todo2.description, done_todo.description], todos)
+        assert_equal([task_list.to_a[0].description, done_todo.description], todos)
+      end
+
+      def test_week_option
+        skip
       end
 
       private
 
-      def build_todo_file
-        todo_file_name = 'tmp/todos/10-03-1993.txt'
-        @todo_file = File.open(todo_file_name, 'w+')
-        @task_list = TaskList.new
-        @todo1 = Task.new('hello', false)
-        @task_list.add_task(@todo1)
-        @todo2 = Task.new('goodbye', false)
-        @task_list.add_task(@todo2)
+      def build_task_list(task_args)
+        TaskList.new.tap do |task_list|
+          task_args.each do |task_arg|
+            task_list.add_task(Task.new(task_arg[:description], task_arg[:done]))
+          end
+        end
       end
 
-      def save_todo_file
-        Writer.for(@task_list).write_to(@todo_file)
+      def build_todo_file(todo_file_name = 'tmp/todos/10-03-1993.txt')
+        @todo_file = File.open(todo_file_name, 'w+')
+      end
+
+      def save_todo_file(task_list)
+        Writer.for(task_list).write_to(@todo_file)
         @todo_file.close
       end
     end
