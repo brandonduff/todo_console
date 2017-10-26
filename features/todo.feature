@@ -22,18 +22,6 @@ Feature: Todos App
 
     """
 
-  Scenario: I only see unfinished todos by default
-    Given a file named "tmp/fake_home/todos/10-03-1993.txt" with:
-    """
-    ✓ Wash the dishes
-    Clean the garage
-    """
-    When I run `todo list`
-    Then stdout should contain exactly:
-    """
-    Clean the garage
-    """
-
   Scenario: I can mark the top todo as done
     Given a file named "tmp/fake_home/todos/10-03-1993.txt" with:
     """
