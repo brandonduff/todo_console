@@ -8,13 +8,15 @@ module Todo
       def setup
         @original_home = ENV['HOME']
         ENV['HOME'] = 'tmp'
-        current_day = Date.parse('10-03-1993')
+        @today = '10-03-1993'
+        current_day = Date.parse(@today)
         current_day_file_name = 'tmp/.current_day.txt'
         Dir.mkdir('tmp') unless Dir.exist?('tmp')
         current_day = File.open(current_day_file_name, 'a')
-        current_day.puts('10-03-1993')
+        current_day.puts(@today)
         current_day.close
         Dir.mkdir('tmp/todos') unless Dir.exist?('tmp/todos')
+        build_todo_file(todo_file_for(@today))
       end
 
       def teardown
@@ -30,7 +32,6 @@ module Todo
 
       def test_list_returns_todos_as_array
         task_list = build_task_list([{ description: 'hello' }, { description: 'goodbye' }])
-        build_todo_file
         save_todo_file(task_list)
 
         todos = ListTodos.new({}).perform
@@ -39,7 +40,6 @@ module Todo
       end
 
       def test_all_options_returns_unfinished_tasks
-        build_todo_file
         task_list = build_task_list([{ description: 'hello' }])
         done_todo = Task.new('done', true)
         task_list.add_task(done_todo)
@@ -51,7 +51,29 @@ module Todo
       end
 
       def test_week_option
-        skip
+        second_task_list = build_task_list([description: 'world'])
+        save_todo_file(second_task_list)
+        yesterday = '09-03-1993'
+        build_todo_file(todo_file_for(yesterday))
+        first_task_list = build_task_list([description: 'hello'])
+        save_todo_file(first_task_list)
+
+        todos = ListTodos.new(week: true).perform
+
+        assert_equal([first_task_list.to_a.first.description, second_task_list.to_a.first.description], todos)
+      end
+
+      def test_month_option
+        last_week = '01-03-1993'
+        second_task_list = build_task_list([description: 'world'])
+        save_todo_file(second_task_list)
+        build_todo_file(todo_file_for(last_week))
+        first_task_list = build_task_list([description: 'hello'])
+        save_todo_file(first_task_list)
+
+        todos = ListTodos.new(month: true).perform
+
+        assert_equal([first_task_list.to_a.first.description, second_task_list.to_a.first.description], todos)
       end
 
       private
@@ -71,6 +93,10 @@ module Todo
       def save_todo_file(task_list)
         Writer.for(task_list).write_to(@todo_file)
         @todo_file.close
+      end
+
+      def todo_file_for(day)
+        "tmp/todos/#{day}.txt"
       end
     end
   end
