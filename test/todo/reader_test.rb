@@ -8,7 +8,7 @@ module Todo
       current_day = '1-1-2000'
       todo_path = 'foo'
       todo_file = Tempfile.new(todo_path)
-      todo_file.write(current_day)
+      todo_file.puts(current_day)
       todo_file.close
       env_helper = double
       allow(env_helper).to receive(:current_day_path).and_return(todo_file.path)

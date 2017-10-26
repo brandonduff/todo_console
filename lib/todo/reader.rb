@@ -5,7 +5,7 @@ module Todo
     end
 
     def current_day
-      File.exist?(@env_helper.current_day_path) ? File.read(@env_helper.current_day_path) : ''
+      File.exist?(@env_helper.current_day_path) ? File.read(@env_helper.current_day_path).strip : ''
     end
   end
 end
