@@ -26,6 +26,10 @@ module Todo
       @done
     end
 
+    def to_s
+      description
+    end
+
     def ==(other)
       other.description == description && other.done? == done?
     end

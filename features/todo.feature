@@ -73,8 +73,10 @@ Feature: Todos App
     Clean the garage
     """
     When I run `todo undo`
+    And I run `todo list`
     Then stdout should contain exactly:
     """
+    Wash the dishes
     Wash the dishes
     Clean the garage
     """
