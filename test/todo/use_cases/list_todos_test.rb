@@ -1,27 +1,12 @@
-require 'test_helper'
-require 'fileutils'
+require_relative 'base'
 
 module Todo
   module UseCases
-    class ListTodosTest < Minitest::Test
+    class ListTodosTest < Base
 
       def setup
-        @original_home = ENV['HOME']
-        ENV['HOME'] = 'tmp'
-        @today = '10-03-1993'
-        current_day = Date.parse(@today)
-        current_day_file_name = 'tmp/.current_day.txt'
-        Dir.mkdir('tmp') unless Dir.exist?('tmp')
-        current_day = File.open(current_day_file_name, 'a')
-        current_day.puts(@today)
-        current_day.close
-        Dir.mkdir('tmp/todos') unless Dir.exist?('tmp/todos')
-        build_todo_file(todo_file_for(@today))
-      end
-
-      def teardown
-        ENV['HOME'] = @original_home
-        FileUtils.rm_rf('tmp')
+        super
+        build_todo_file(todo_file_for('10-03-1993'))
       end
 
       def test_list_with_no_current_todos_returns_empty_list
@@ -84,19 +69,6 @@ module Todo
             task_list.add_task(Task.new(task_arg[:description], task_arg[:done]))
           end
         end
-      end
-
-      def build_todo_file(todo_file_name = 'tmp/todos/10-03-1993.txt')
-        @todo_file = File.open(todo_file_name, 'w+')
-      end
-
-      def save_todo_file(task_list)
-        Writer.for(task_list).write_to(@todo_file)
-        @todo_file.close
-      end
-
-      def todo_file_for(day)
-        "tmp/todos/#{day}.txt"
       end
     end
   end
