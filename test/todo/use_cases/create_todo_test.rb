@@ -31,10 +31,6 @@ module Todo
         assert_equal("existing\ntest\n", File.read(todo_file_for(@today)))
       end
 
-      def todo_file_for(day)
-        "tmp/todos/#{day}.txt"
-      end
-
       private
 
       def setup_file_system
@@ -53,6 +49,10 @@ module Todo
 
       def reset_home
         ENV['HOME'] = @original_home
+      end
+
+      def todo_file_for(day)
+        "tmp/todos/#{day}.txt"
       end
     end
   end

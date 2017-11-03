@@ -25,8 +25,7 @@ desc 'Create a new todo'
 arg_name 'Todo text'
 command :new, :n do |c|
   c.action do |_global_options, _options, args|
-    @tasks.add_task(Todo::TaskBuilder.new(args.join(' ')).build)
-    write_tasks
+    Todo::UseCases::CreateTodo.new(args.join(' ')).perform
   end
 end
 
