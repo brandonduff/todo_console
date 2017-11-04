@@ -7,5 +7,9 @@ module Todo
     def todo_path
       File.join(ENV['HOME'], 'todos/')
     end
+
+    def todo_file_for_day(day)
+      File.join(todo_path, "#{day}.txt")
+    end
   end
 end

@@ -1,33 +1,30 @@
 module Todo
   class TaskListFetcher
-    def initialize(day)
-      @day = day
+    def initialize(reader)
+      @reader = reader
     end
 
-    def task_data
-      File.exist?(todo_file) ? File.read(todo_file) : ''
+    def tasks_for_day(day)
+      task_data = @reader.task_data_for_day(day)
+      TaskList.new.tap do |task_list|
+        task_data.each do |task|
+          task_list.add_task(TaskBuilder.new(task).build)
+        end
+      end
     end
 
-    def todo_file
-      File.join(ENV['HOME'], 'todos', day_string + '.txt')
+    def for_week(day)
+      multi_list_fetcher_for_days_ago(7, day)
     end
 
-    def for_week
-      multi_list_fetcher_for_days_ago(7)
-    end
-
-    def for_month
-      multi_list_fetcher_for_days_ago(31)
+    def for_month(day)
+      multi_list_fetcher_for_days_ago(31, day)
     end
 
     private
 
-    def multi_list_fetcher_for_days_ago(days_ago)
-      MultiTaskListFetcher.new(Range.new(@day - days_ago, @day))
-    end
-
-    def day_string
-      @day.strftime("%d-%m-%Y")
+    def multi_list_fetcher_for_days_ago(days_ago, day)
+      MultiTaskListFetcher.new(Range.new(day - days_ago, day))
     end
   end
 end

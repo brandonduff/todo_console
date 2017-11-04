@@ -8,6 +8,7 @@ require 'todo/multi_task_list_fetcher'
 require 'todo/day_formatter'
 require 'todo/use_cases/list_todos'
 require 'todo/use_cases/create_todo'
+require 'todo/use_cases/undo_done'
 require 'todo/env_helper'
 require 'todo/reader'
 # Add requires for other files you add to your project here, so
