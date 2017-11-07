@@ -43,15 +43,11 @@ module Todo
 
     def test_task_data_for_day_when_file_does_not_exist
       current_day = '1-1-2000'
-      todo_path = 'foo'
-      todo_file = Tempfile.new(todo_path)
-      todo_file.puts("hello foo\ngoodbye")
-      todo_file.close
-      allow(@env_helper).to receive(:todo_file_for_day).with(current_day).and_return(todo_file.path)
+      allow(@env_helper).to receive(:todo_file_for_day).with(current_day).and_return('non-existent')
 
       reader = Reader.new(@env_helper)
 
-      assert_equal(['hello foo', 'goodbye'], reader.task_data_for_day(current_day))
+      assert_equal([], reader.task_data_for_day(current_day))
     end
   end
 end

@@ -2,34 +2,33 @@ require 'test_helper'
 
 class MultiTaskListFetcherTest < Minitest::Test
 
+  def setup
+    @reader = Object.new
+  end
+
   def test_task_data_for_one_day_range
-    first_day = Date.parse('10-03-1993')
+    first_day = '10-03-1993'
     second_day = first_day
-    date_range = Range.new(first_day, second_day)
     fetcher = instance_double("TaskListFetcher")
 
-    allow(Todo::TaskListFetcher).to receive(:new).with(date_range).and_return(fetcher)
-    allow(fetcher).to receive(:task_data).and_return('data')
+    allow(Todo::TaskListFetcher).to receive(:new).with(@reader).and_return(fetcher)
+    allow(fetcher).to receive(:tasks_for_day).with(second_day).and_return(['data'])
 
-    assert_equal('data', Todo::MultiTaskListFetcher.new(date_range).task_data)
+    assert_equal(Todo::TaskList.from_array(['data']), Todo::MultiTaskListFetcher.new(@reader, 0).tasks_for_day(second_day))
   end
 
   def test_task_data_for_range
-    first_day = Date.parse('10-03-1993')
-    second_day = Date.parse('12-03-1993')
-    date_range = Range.new(first_day, second_day)
-    first_fetcher = instance_double("TaskListFetcher")
-    second_fetcher = instance_double("TaskListFetcher")
-    third_fetcher = instance_double("TaskListFetcher")
+    first_day = '10-03-1993'
+    second_day = '11-03-1993'
+    third_day = '12-03-1993'
+    fetcher = instance_double("TaskListFetcher")
 
-    allow(Todo::TaskListFetcher).to receive(:new).with(date_range.first).and_return(first_fetcher)
-    allow(Todo::TaskListFetcher).to receive(:new).with(Date.parse('11-03-1993')).and_return(second_fetcher)
-    allow(Todo::TaskListFetcher).to receive(:new).with(date_range.last).and_return(third_fetcher)
-    allow(first_fetcher).to receive(:task_data).and_return('first ')
-    allow(second_fetcher).to receive(:task_data).and_return('second ')
-    allow(third_fetcher).to receive(:task_data).and_return('third')
+    allow(Todo::TaskListFetcher).to receive(:new).with(@reader).and_return(fetcher)
+    allow(fetcher).to receive(:tasks_for_day).with(first_day).and_return(['first'])
+    allow(fetcher).to receive(:tasks_for_day).with(second_day).and_return(['second'])
+    allow(fetcher).to receive(:tasks_for_day).with(third_day).and_return(['third'])
 
 
-    assert_equal('first second third', Todo::MultiTaskListFetcher.new(date_range).task_data)
+    assert_equal(Todo::TaskList.from_array(%w(first second third)), Todo::MultiTaskListFetcher.new(@reader, 2).tasks_for_day(third_day))
   end
 end

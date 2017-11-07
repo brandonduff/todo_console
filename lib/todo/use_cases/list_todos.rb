@@ -7,7 +7,7 @@ module Todo
 
       def perform
         current_day = DayFormatter.format(read_current_day)
-        tasks = task_fetcher(current_day).tasks_for_day(current_day)
+        tasks = task_fetcher.tasks_for_day(current_day)
 
         if @request[:all]
           present(tasks)
@@ -26,12 +26,12 @@ module Todo
         Reader.new(EnvHelper.new).current_day
       end
 
-      def task_fetcher(current_day)
+      def task_fetcher
         fetcher = TaskListFetcher.new(Reader.new(EnvHelper.new))
         if @request[:month]
-          fetcher.for_month(Date.parse(current_day))
+          fetcher.for_month
         elsif @request[:week]
-          fetcher.for_week(Date.parse(current_day))
+          fetcher.for_week
         else
           fetcher
         end

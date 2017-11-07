@@ -17,16 +17,14 @@ class TaskListFetcherTest < Minitest::Test
   end
 
   def test_for_week_returns_multi_task_list_fetcher_for_week
-    week_range = Range.new(@current_day - 7, @current_day)
-    allow(Todo::MultiTaskListFetcher).to receive(:new).with(week_range).and_return(@multi_task_fetcher_double)
+    allow(Todo::MultiTaskListFetcher).to receive(:new).with(@reader, 7).and_return(@multi_task_fetcher_double)
 
-    assert_equal(@multi_task_fetcher_double, Todo::TaskListFetcher.new(@reader).for_week(@current_day))
+    assert_equal(@multi_task_fetcher_double, Todo::TaskListFetcher.new(@reader).for_week)
   end
 
   def test_for_month_returns_multi_task_list_fetcher_for_month
-    month_range = Range.new(@current_day - 31, @current_day)
-    allow(Todo::MultiTaskListFetcher).to receive(:new).with(month_range).and_return(@multi_task_fetcher_double)
+    allow(Todo::MultiTaskListFetcher).to receive(:new).with(@reader, 31).and_return(@multi_task_fetcher_double)
 
-    assert_equal(@multi_task_fetcher_double, Todo::TaskListFetcher.new(@reader).for_month(@current_day))
+    assert_equal(@multi_task_fetcher_double, Todo::TaskListFetcher.new(@reader).for_month)
   end
 end

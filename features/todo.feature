@@ -22,21 +22,6 @@ Feature: Todos App
 
     """
 
-  Scenario: I can mark the top todo as done
-    Given a file named "tmp/fake_home/todos/10-03-1993.txt" with:
-    """
-    Wash the dishes
-    Clean the garage
-
-    """
-    When I run `todo done`
-    Then stdout should contain:
-    """
-    ✓ Wash the dishes
-    Clean the garage
-
-    """
-
   Scenario: I can mark the second todo as done
     Given a file named "tmp/fake_home/todos/10-03-1993.txt" with:
     """

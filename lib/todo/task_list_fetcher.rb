@@ -13,18 +13,18 @@ module Todo
       end
     end
 
-    def for_week(day)
-      multi_list_fetcher_for_days_ago(7, day)
+    def for_week
+      multi_list_fetcher_for_days_ago(7)
     end
 
-    def for_month(day)
-      multi_list_fetcher_for_days_ago(31, day)
+    def for_month
+      multi_list_fetcher_for_days_ago(31)
     end
 
     private
 
-    def multi_list_fetcher_for_days_ago(days_ago, day)
-      MultiTaskListFetcher.new(Range.new(day - days_ago, day))
+    def multi_list_fetcher_for_days_ago(days_ago)
+      MultiTaskListFetcher.new(@reader, days_ago)
     end
   end
 end

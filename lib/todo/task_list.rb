@@ -32,6 +32,26 @@ module Todo
       @tasks
     end
 
+    def concat(other_list)
+      TaskList.new.tap do |task_list|
+        to_a.each do |task|
+          task_list.add_task(task)
+        end
+
+        other_list.to_a.each do |task|
+          task_list.add_task(task)
+        end
+      end
+    end
+
+    def self.from_array(array)
+      TaskList.new.tap do |task_list|
+        array.each do |task|
+          task_list.add_task(task)
+        end
+      end
+    end
+
     def ==(other_list)
       @tasks.each_with_index do |task, index|
         return false unless task == other_list.tasks[index]
