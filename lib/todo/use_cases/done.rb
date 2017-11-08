@@ -1,6 +1,6 @@
 module Todo
   module UseCases
-    class UndoDone
+    class Done
 
       def perform
         task_list = TaskListFetcher.new(reader).tasks_for_day(read_current_day)

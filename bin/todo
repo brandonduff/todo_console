@@ -43,10 +43,7 @@ desc 'Marks the next unfinished todo as done'
 arg_name 'Takes a filename'
 command :done, :d do |c|
   c.action do |_global_options, _options, _args|
-    @tasks.done
-    puts @tasks
-    puts @tasks.unfinished_tasks
-    write_tasks
+    Todo::UseCases::Done.new.perform
   end
 end
 
