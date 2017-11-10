@@ -110,9 +110,7 @@ on_error do |exception|
 end
 
 def write_tasks
-  file = File.open(@todo_file, 'a')
-  Todo::Writer.for(@tasks).write_to(file)
-  file.close
+  Todo::Writer.for(@tasks).write_to(@todo_file)
 end
 
 def task_fetcher(global)

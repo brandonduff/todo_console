@@ -3,7 +3,7 @@ module Todo
     class Done
 
       def perform
-        task_list = TaskListFetcher.new(reader).tasks_for_day(read_current_day)
+        task_list = todays_task_list
         done_task = task_list.done
         write(task_list)
         present(done_task)
@@ -11,14 +11,16 @@ module Todo
 
       private
 
+      def todays_task_list
+        TaskListFetcher.new(reader).tasks_for_day(read_current_day)
+      end
+
       def read_current_day
         reader.current_day
       end
 
       def write(task_list)
-        todo_file = File.open(env_helper.todo_file_for_day(reader.current_day), 'a')
-        Writer.for(task_list).write_to(todo_file)
-        todo_file.close
+        Writer.for(task_list).write_to(env_helper.todo_file_for_day(reader.current_day))
       end
 
       def present(todo)

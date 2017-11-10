@@ -14,9 +14,7 @@ module Todo
       end
 
       def write(task_list)
-        todo_file = File.open(env_helper.todo_file_for_day(reader.current_day), 'a')
-        Writer.for(task_list).write_to(todo_file)
-        todo_file.close
+        Writer.for(task_list).write_to(env_helper.todo_file_for_day(reader.current_day))
       end
 
       def reader

@@ -8,9 +8,11 @@ module Todo
       @writable = writable
     end
 
-    def write_to(buffer)
-      buffer.truncate(0)
-      buffer.puts(@writable)
+    def write_to(file_path)
+      file = File.open(file_path, 'a')
+      file.truncate(0)
+      file.puts(@writable)
+      file.close
     end
   end
 end

@@ -12,5 +12,6 @@ require 'todo/use_cases/done'
 require 'todo/use_cases/clear'
 require 'todo/env_helper'
 require 'todo/reader'
+require 'todo/task_list_writer'
 # Add requires for other files you add to your project here, so
 # you just need to require this one file in your bin file
