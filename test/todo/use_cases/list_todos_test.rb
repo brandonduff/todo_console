@@ -16,7 +16,7 @@ module Todo
       end
 
       def test_list_returns_todos_as_array
-        task_list = build_task_list([{ description: 'hello' }, { description: 'goodbye' }])
+        task_list = TaskListBuilder.new([{ description: 'hello' }, { description: 'goodbye' }]).build
         save_todo_file(task_list)
 
         todos = ListTodos.new({}).perform
@@ -25,7 +25,7 @@ module Todo
       end
 
       def test_all_options_returns_unfinished_tasks
-        task_list = build_task_list([{ description: 'hello' }])
+        task_list = TaskListBuilder.new([{ description: 'hello' }]).build
         done_todo = Task.new('done', true)
         task_list.add_task(done_todo)
         save_todo_file(task_list)
@@ -36,11 +36,11 @@ module Todo
       end
 
       def test_week_option
-        second_task_list = build_task_list([description: 'world'])
+        second_task_list = TaskListBuilder.new([description: 'world']).build
         save_todo_file(second_task_list)
         yesterday = '09-03-1993'
         build_todo_file(todo_file_for(yesterday))
-        first_task_list = build_task_list([description: 'hello'])
+        first_task_list = TaskListBuilder.new([description: 'hello']).build
         save_todo_file(first_task_list)
 
         todos = ListTodos.new(week: true).perform
@@ -50,25 +50,15 @@ module Todo
 
       def test_month_option
         last_week = '01-03-1993'
-        second_task_list = build_task_list([description: 'world'])
+        second_task_list = TaskListBuilder.new([description: 'world']).build
         save_todo_file(second_task_list)
         build_todo_file(todo_file_for(last_week))
-        first_task_list = build_task_list([description: 'hello'])
+        first_task_list = TaskListBuilder.new([description: 'hello']).build
         save_todo_file(first_task_list)
 
         todos = ListTodos.new(month: true).perform
 
         assert_equal([first_task_list.to_a.first.description, second_task_list.to_a.first.description], todos)
-      end
-
-      private
-
-      def build_task_list(task_args)
-        TaskList.new.tap do |task_list|
-          task_args.each do |task_arg|
-            task_list.add_task(Task.new(task_arg[:description], task_arg[:done]))
-          end
-        end
       end
     end
   end
