@@ -20,7 +20,7 @@ module Todo
       end
 
       def write(task_list)
-        Writer.for(task_list).write_to(env_helper.todo_file_for_day(reader.current_day))
+        TaskListWriter.new.write_todays_tasks(task_list)
       end
 
       def present(todo)

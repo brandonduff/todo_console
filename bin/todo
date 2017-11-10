@@ -69,7 +69,7 @@ arg_name 'New date'
 command :day do |c|
   c.action do |_global_options, _options, args|
     if (new_day = args.first)
-      Todo::Writer.for(Todo::DayFormatter.format(new_day)).write_to(File.open(current_day_file, 'a+'))
+      Todo::TaskListWriter.new.write_current_day(Todo::DayFormatter.format(new_day))
     else
       puts Todo::DayFormatter.format(read_current_day)
     end
@@ -94,7 +94,6 @@ pre do |global, command, options, args|
   @current_day = Todo::DayFormatter.format(read_current_day)
   @todo_file = File.join(ENV['HOME'], 'todos', "#{Date.parse(@current_day).strftime("%d-%m-%Y")}.txt")
   @tasks = task_fetcher(global).tasks_for_day(@current_day)
-  # @tasks = Todo::TaskList.new(StringIO.new(initial_buffer))
 end
 
 post do |global, command, options, args|
@@ -110,7 +109,7 @@ on_error do |exception|
 end
 
 def write_tasks
-  Todo::Writer.for(@tasks).write_to(@todo_file)
+  Todo::TaskListWriter.new.write_todays_tasks(@tasks)
 end
 
 def task_fetcher(global)
