@@ -9,6 +9,7 @@ require 'todo/day_formatter'
 require 'todo/use_cases/list_todos'
 require 'todo/use_cases/create_todo'
 require 'todo/use_cases/done'
+require 'todo/use_cases/clear'
 require 'todo/env_helper'
 require 'todo/reader'
 # Add requires for other files you add to your project here, so

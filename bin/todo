@@ -52,8 +52,7 @@ arg_name 'Takes a filename'
 
 command :clear do |c|
   c.action do |_global_options, _options, _args|
-    @tasks.clear
-    write_tasks
+    Todo::UseCases::Clear.new.perform
   end
 end
 
