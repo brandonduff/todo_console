@@ -90,9 +90,7 @@ pre do |global, command, options, args|
   # Use skips_pre before a command to skip this block
   # on that command only
   Dir.mkdir(File.join(ENV['HOME'], 'todos')) unless Dir.exist?(File.join(ENV['HOME'], 'todos'))
-  @current_day = Todo::DayFormatter.format(read_current_day)
-  @todo_file = File.join(ENV['HOME'], 'todos', "#{Date.parse(@current_day).strftime("%d-%m-%Y")}.txt")
-  @tasks = task_fetcher(global).tasks_for_day(@current_day)
+  true
 end
 
 post do |global, command, options, args|
@@ -105,21 +103,6 @@ on_error do |exception|
   # Error logic here
   # return false to skip default error handling
   true
-end
-
-def write_tasks
-  persistence.write_todays_tasks(@tasks)
-end
-
-def task_fetcher(global)
-  fetcher = Todo::TaskListFetcher.new(persistence)
-  if global[:month]
-    fetcher.for_month
-  elsif global[:week]
-    fetcher.for_week
-  else
-    fetcher
-  end
 end
 
 def persistence
