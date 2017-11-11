@@ -59,8 +59,7 @@ end
 desc 'Unmarks the last done todo as done'
 command :undo do |c|
   c.action do |_global_options, _options, _args|
-    puts @tasks.undo
-    write_tasks
+    puts Todo::UseCases::Undo.new.perform
   end
 end
 
