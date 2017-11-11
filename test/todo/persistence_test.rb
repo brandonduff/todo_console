@@ -41,5 +41,9 @@ module Todo
 
       assert_equal(expected_task_list, Persistence.new.read_tasks_for_day(@current_day))
     end
+
+    def test_read_current_day
+      assert_equal(@current_day, Persistence.new.read_current_day)
+    end
   end
 end

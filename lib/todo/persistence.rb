@@ -20,5 +20,9 @@ module Todo
         end
       end
     end
+
+    def read_current_day
+      Reader.new(@env_helper).current_day
+    end
   end
 end

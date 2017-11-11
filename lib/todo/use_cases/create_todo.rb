@@ -6,15 +6,13 @@ module Todo
       end
 
       def perform
-        file = File.open(todo_file, 'a')
-        file.puts(@todo_text)
-        file.close
+        task_list = persistence.read_tasks_for_day(persistence.read_current_day)
+        task_list.add_task(TaskBuilder.new(@todo_text).build)
+        persistence.write_todays_tasks(task_list)
       end
 
-      def todo_file
-        env_helper = EnvHelper.new
-        current_day = Reader.new(env_helper).current_day
-        env_helper.todo_path + current_day.strip + '.txt'
+      def persistence
+        Persistence.new
       end
     end
   end

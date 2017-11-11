@@ -2,27 +2,15 @@ module Todo
   module UseCases
     class Clear
       def perform
-        task_list = TaskListFetcher.new(Persistence.new).tasks_for_day(read_current_day)
+        task_list = TaskListFetcher.new(persistence).tasks_for_day(persistence.read_current_day)
         task_list.clear
-        write(task_list)
+        persistence.write_todays_tasks(task_list)
       end
 
       private
 
-      def read_current_day
-        reader.current_day
-      end
-
-      def write(task_list)
-        Persistence.new.write_todays_tasks(task_list)
-      end
-
-      def reader
-        Reader.new(env_helper)
-      end
-
-      def env_helper
-        EnvHelper.new
+      def persistence
+        Persistence.new
       end
     end
   end
