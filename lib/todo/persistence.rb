@@ -1,5 +1,5 @@
 module Todo
-  class TaskListWriter
+  class Persistence
     def initialize
       @env_helper = EnvHelper.new
     end
@@ -10,6 +10,15 @@ module Todo
 
     def write_current_day(day)
       Writer.for(day).write_to(@env_helper.current_day_path)
+    end
+
+    def read_tasks_for_day(day)
+      task_data = Reader.new(@env_helper).task_data_for_day(day)
+      TaskList.new.tap do |task_list|
+        task_data.each do |task|
+          task_list.add_task(TaskBuilder.new(task).build)
+        end
+      end
     end
   end
 end

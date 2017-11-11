@@ -69,7 +69,7 @@ arg_name 'New date'
 command :day do |c|
   c.action do |_global_options, _options, args|
     if (new_day = args.first)
-      Todo::TaskListWriter.new.write_current_day(Todo::DayFormatter.format(new_day))
+      Todo::Persistence.new.write_current_day(Todo::DayFormatter.format(new_day))
     else
       puts Todo::DayFormatter.format(read_current_day)
     end
@@ -109,11 +109,11 @@ on_error do |exception|
 end
 
 def write_tasks
-  Todo::TaskListWriter.new.write_todays_tasks(@tasks)
+  Todo::Persistence.new.write_todays_tasks(@tasks)
 end
 
 def task_fetcher(global)
-  fetcher = Todo::TaskListFetcher.new(Todo::Reader.new(Todo::EnvHelper.new))
+  fetcher = Todo::TaskListFetcher.new(Todo::Persistence.new)
   if global[:month]
     fetcher.for_month
   elsif global[:week]

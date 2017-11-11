@@ -27,7 +27,7 @@ module Todo
       end
 
       def task_fetcher
-        fetcher = TaskListFetcher.new(Reader.new(EnvHelper.new))
+        fetcher = TaskListFetcher.new(Persistence.new)
         if @request[:month]
           fetcher.for_month
         elsif @request[:week]

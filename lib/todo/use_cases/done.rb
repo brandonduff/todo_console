@@ -12,7 +12,7 @@ module Todo
       private
 
       def todays_task_list
-        TaskListFetcher.new(reader).tasks_for_day(read_current_day)
+        TaskListFetcher.new(Persistence.new).tasks_for_day(read_current_day)
       end
 
       def read_current_day
@@ -20,7 +20,7 @@ module Todo
       end
 
       def write(task_list)
-        TaskListWriter.new.write_todays_tasks(task_list)
+        Persistence.new.write_todays_tasks(task_list)
       end
 
       def present(todo)

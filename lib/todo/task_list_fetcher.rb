@@ -1,16 +1,11 @@
 module Todo
   class TaskListFetcher
-    def initialize(reader)
-      @reader = reader
+    def initialize(persistence)
+      @persistence = persistence
     end
 
     def tasks_for_day(day)
-      task_data = @reader.task_data_for_day(day)
-      TaskList.new.tap do |task_list|
-        task_data.each do |task|
-          task_list.add_task(TaskBuilder.new(task).build)
-        end
-      end
+      @persistence.read_tasks_for_day(day)
     end
 
     def for_week
@@ -24,7 +19,7 @@ module Todo
     private
 
     def multi_list_fetcher_for_days_ago(days_ago)
-      MultiTaskListFetcher.new(@reader, days_ago)
+      MultiTaskListFetcher.new(@persistence, days_ago)
     end
   end
 end
