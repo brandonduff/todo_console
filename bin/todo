@@ -67,11 +67,9 @@ desc 'Get and set the current day'
 arg_name 'New date'
 command :day do |c|
   c.action do |_global_options, _options, args|
-    if (new_day = args.first)
-      persistence.write_current_day(Todo::DayFormatter.format(new_day))
-    else
-      puts Todo::DayFormatter.format(read_current_day)
-    end
+    new_day = args.first
+    result = Todo::UseCases::SetCurrentDay.new(new_day: new_day).perform
+    puts result unless new_day
   end
 end
 
