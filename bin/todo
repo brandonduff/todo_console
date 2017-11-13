@@ -73,20 +73,13 @@ command :day do |c|
   end
 end
 
-def current_day_file
-  File.join(ENV['HOME'], '.current_day.txt')
-end
-
-def read_current_day
-  File.exist?(current_day_file) ? File.read(current_day_file).strip : ''
-end
-
 pre do |global, command, options, args|
   # Pre logic here
   # Return true to proceed; false to abort and not call the
   # chosen command
   # Use skips_pre before a command to skip this block
   # on that command only
+  # TODO: Move this into readers/writers
   Dir.mkdir(File.join(ENV['HOME'], 'todos')) unless Dir.exist?(File.join(ENV['HOME'], 'todos'))
   true
 end
@@ -101,10 +94,6 @@ on_error do |exception|
   # Error logic here
   # return false to skip default error handling
   true
-end
-
-def persistence
-  Todo::Persistence.new
 end
 
 exit run(ARGV)
