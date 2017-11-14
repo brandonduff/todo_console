@@ -5,6 +5,7 @@ module Todo
     end
 
     def write_todays_tasks(tasks)
+      ensure_todo_dir_exists
       Writer.for(tasks).write_to(@env_helper.todo_file_for_day(Reader.new(@env_helper).current_day))
     end
 
@@ -23,6 +24,12 @@ module Todo
 
     def read_current_day
       Reader.new(@env_helper).current_day
+    end
+
+    private
+
+    def ensure_todo_dir_exists
+      Dir.mkdir(@env_helper.todo_path) unless Dir.exist?(@env_helper.todo_path)
     end
   end
 end

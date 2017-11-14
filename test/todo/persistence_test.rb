@@ -19,12 +19,22 @@ module Todo
       allow(@reader).to receive(:task_data_for_day).with(@current_day).and_return(@task_data)
       allow(@env_helper).to receive(:current_day_path).and_return(@current_day_path)
       allow(@env_helper).to receive(:todo_file_for_day).with(@current_day).and_return(@todo_path)
+      allow(@env_helper).to receive(:todo_path).and_return('/tmp/todo')
     end
 
     def test_task_list_writer
       expect(@writer).to receive(:write_to).with(@todo_path)
       task_list_writer = Persistence.new
       task_list_writer.write_todays_tasks('foo')
+    end
+
+    def test_writing_ensure_todo_dir_exists
+      allow(@writer).to receive(:write_to).with(@todo_path)
+      Dir.rmdir(@env_helper.todo_path)
+
+      Persistence.new.write_todays_tasks('foo')
+
+      assert(Dir.exist?(@env_helper.todo_path))
     end
 
     def test_write_current_day
