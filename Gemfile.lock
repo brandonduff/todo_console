@@ -1,9 +1,14 @@
+GIT
+  remote: https://github.com/brandonduff/todo.git
+  revision: 955b2b153c1de646dc499e6822214c96b28cffbd
+  specs:
+    todo (0.0.1)
+
 PATH
   remote: .
   specs:
-    todo (0.0.1)
+    todo_console (0.0.1)
       gli (= 2.16.0)
-      sinatra
 
 GEM
   remote: https://rubygems.org/
@@ -39,7 +44,6 @@ GEM
     minitest (5.9.1)
     multi_json (1.12.1)
     multi_test (0.1.2)
-    mustermann (1.0.1)
     pry (0.10.4)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
@@ -47,9 +51,6 @@ GEM
     pry-doc (0.11.1)
       pry (~> 0.9)
       yard (~> 0.9)
-    rack (2.0.3)
-    rack-protection (2.0.0)
-      rack
     rake (12.0.0)
     rdoc (5.1.0)
     rspec-expectations (3.5.0)
@@ -59,14 +60,8 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.5.0)
     rspec-support (3.5.0)
-    sinatra (2.0.0)
-      mustermann (~> 1.0)
-      rack (~> 2.0)
-      rack-protection (= 2.0.0)
-      tilt (~> 2.0)
     slop (3.6.0)
     thor (0.19.4)
-    tilt (2.0.8)
     yard (0.9.9)
 
 PLATFORMS
@@ -81,6 +76,7 @@ DEPENDENCIES
   rdoc
   rspec-mocks
   todo!
+  todo_console!
 
 BUNDLED WITH
    1.14.6
